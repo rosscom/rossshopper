@@ -38,6 +38,7 @@ public class ListResourceIT {
         JsonObjectBuilder listBuilder =  Json.createObjectBuilder();
         JsonObject listToCreate = listBuilder.
                 add("item", "korv").build();
+        System.out.println("Create a listitem: korv");
         Response postResponse = this.provider.target().request().post(Entity.json(listToCreate));
         assertThat(postResponse.getStatus(),is(204));
         
