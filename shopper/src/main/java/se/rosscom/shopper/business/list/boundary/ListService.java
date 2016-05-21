@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
@@ -23,8 +24,16 @@ public class ListService {
     
     
     
-    public void save(ListDetail list) {
-        this.em.merge(list);
+    public ListDetail save(ListDetail list) {
+        return this.em.merge(list);
+    }
+    
+    public ListDetail findByFamily(String family) {
+       return this.em.find((ListDetail.class), family); 
+    }
+
+    public ListDetail findById(long id) {
+       return this.em.find((ListDetail.class), id); 
     }
 
     public void addItem(ListDetail item) {
