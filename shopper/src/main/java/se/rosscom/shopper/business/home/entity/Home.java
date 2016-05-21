@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author ulfrossang
+ * dagg
  */
 @Entity
 @NamedQuery(name = Home.findAll, query = " SELECT t from Home t")
