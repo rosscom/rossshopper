@@ -91,7 +91,15 @@ public class FamilyResourceIT {
         String location = postResponse.getHeaderString("Location");
         System.out.println("Check that we have a family: " +location);
         
-
+        // Find family by id
+        System.out.println("Find family by id");
+        JsonObject family = this.provider.client().
+                target(location).
+                request(MediaType.APPLICATION_JSON).
+                get(JsonObject.class);
+        assertFalse(family.isEmpty());        
+        System.out.println("family: " + family);
+        
         // listAll
         System.out.println("list all");
         Response response = provider.target().
