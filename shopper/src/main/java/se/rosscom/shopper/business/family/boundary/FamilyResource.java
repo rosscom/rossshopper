@@ -42,14 +42,14 @@ public class FamilyResource {
         return Response.created(uri).build();
     }
     @GET
-    @Path("{familyId}")
-    public Family find(@PathParam("familyId") long id) {
+    @Path("{id}")
+    public Family find(@PathParam("id") long id) {
         return familyService.findById(id);
     }
 
     @GET
     @Path("{home}")
-    public Family find(@PathParam("home") String home) {
+    public Family findByHome(@PathParam("home") String home) {
         return familyService.findByHome(home);
     }
 
