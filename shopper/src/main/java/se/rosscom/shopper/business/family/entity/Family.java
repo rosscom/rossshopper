@@ -14,6 +14,7 @@ import se.rosscom.shopper.business.home.entity.Home;
 /**
  *
  * @author ulfrossang
+ * 1, dagg, ulf@rosscom.org
  */
 @Entity
 @NamedQuery(name = Family.findAll, query = " SELECT t from Family t")
