@@ -42,24 +42,13 @@ public class FamilyResourceIT {
                 add("name", "dagg").
                 add("adress", "daggstigen 20").build();
         System.out.println("Create a home: dagg daggstigen 20");
-        // Create an account
-        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
-        JsonObject accountToCreate = accountBuilder.
-                add("user", "admin").
-                add("password", "password").build();
-        // Create a home
-        JsonObjectBuilder familyBuilder =  Json.createObjectBuilder();
-        JsonObject familyToCreate = familyBuilder.
-                add("home", homeToCreate).
-                add("account", accountToCreate).build();
         
-        // Create 
         Response postResponseHome = this.providerHome.target().request().post(Entity.json(homeToCreate));
         assertThat(postResponseHome.getStatus(),is(201));
         String locationHome = postResponseHome.getHeaderString("Location");
         System.out.println("Check that we have a home dagg: " +locationHome);
         
-        // Find with name
+        // Find home with name
         System.out.println("Find home dagg");
         JsonObject daggHome = this.provider.client().
                target(locationHome).
@@ -68,12 +57,18 @@ public class FamilyResourceIT {
         assertTrue(daggHome.getString("name").contains("dagg"));        
         System.out.println("daggHome: " + daggHome.getString("name") + " " + daggHome.getString("adress"));
 
+        // Create an account
+        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
+        JsonObject accountToCreate = accountBuilder.
+                add("user", "admin").
+                add("password", "password").build();
+        System.out.println("Create an account: admin pasword");
+
         Response postResponseAccount = this.providerAccount.target().request().post(Entity.json(accountToCreate));
         assertThat(postResponseAccount.getStatus(),is(201));
         String locationAccount = postResponseAccount.getHeaderString("Location");
         System.out.println("Check that we have an account admin: " +locationAccount);
 
-        // Create
         System.out.println("Find admin account");
         JsonObject adminAccount = this.provider.client().
                target(locationAccount).
@@ -82,6 +77,14 @@ public class FamilyResourceIT {
         assertTrue(adminAccount.getString("user").contains("admin"));   
         System.out.println("adminAccount: " + adminAccount.getString("user") + " " + adminAccount.getString("password"));
         
+        // Create a family
+        JsonObjectBuilder familyBuilder =  Json.createObjectBuilder();
+        JsonObject familyToCreate = familyBuilder.
+                add("home", homeToCreate).
+                add("account", accountToCreate).build();
+         System.out.println("Create a family: " + homeToCreate.get("name") + " " + accountToCreate.getString("user"));
+       
+ 
         System.out.println("Create family");
         Response postResponse = this.provider.target().request().post(Entity.json(familyToCreate));
         assertThat(postResponse.getStatus(),is(201));
