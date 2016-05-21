@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author ulfrossang
+ * ulf@rosscom.org vik012
  */
 @Entity
 @NamedQuery(name = Account.findAll, query = " SELECT t from Account t")
