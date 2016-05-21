@@ -5,12 +5,18 @@
  */
 package se.rosscom.shopper.business.list.boundary;
 
+import java.net.URI;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import se.rosscom.shopper.business.family.boundary.FamilyService;
+import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
@@ -23,11 +29,16 @@ public class ListResource {
 
     @Inject
     ListService listService;
-    
+ 
+    @Inject
+    FamilyService familyService;
         
     @POST
-    public void save(ListDetail listdetail) {
-        listService.save(listdetail);    
+    public Response save(ListDetail listdetail, @Context UriInfo info) {
+        ListDetail saveDetail = listService.save(listdetail);    
+        Long detailId = saveDetail.getId();
+        URI uri = info.getAbsolutePathBuilder().path("/"+detailId).build();
+        return Response.created(uri).build();
     }
     
     @GET
