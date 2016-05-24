@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.home.entity.Home;
 
 /**
  *
@@ -61,8 +62,8 @@ public class FamilyResource {
 
     @DELETE
     @Path("{home}")
-    public void delete(@PathParam("home") String home) {
-        familyService.delete(home);
+    public void delete(@PathParam("home") String name) {
+        familyService.delete(name);
         
     }
 
