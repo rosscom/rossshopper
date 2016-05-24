@@ -111,72 +111,6 @@ public class FamilyResourceIT {
         assertFalse(allFamilys.isEmpty());
 
         
-//       JsonObject familyOne = this.provider.target().
-//               path("dagg").
-//               request(MediaType.APPLICATION_JSON).
-//               get(JsonObject.class);
-//        assertTrue(familyOne.getString("name").contains("dagg"));
-        
-        // Find with name
-        // Todo check response better
-//        System.out.println("Find family by id");
-//        JsonObject family = this.provider.client().
-//               target(location).
-//               request(MediaType.APPLICATION_JSON).
-//               get(JsonObject.class);
-//        assertFalse(family.isEmpty());       
-//        System.out.println("family: " + family);
-        
-        // Update
-//        System.out.println("check update");
-//        JsonObjectBuilder updateBuilder =  Json.createObjectBuilder();
-//        JsonObject updated = updateBuilder.
-//                add("adress", "huddinge").build();
-//        
-//        this.provider.client().
-//                target(location).
-//                request(MediaType.APPLICATION_JSON).
-//                put(Entity.json(updated));
-//
-//        // Find again
-//        // Find
-//        JsonObject updateHome = this.provider.client().
-//                target(location).
-//                request(MediaType.APPLICATION_JSON).
-//                get(JsonObject.class);
-//        assertTrue(updateHome.getString("adress").contains("huddinge"));  
-//
-//        // listAll again
-//        response = provider.target().
-//                request(MediaType.APPLICATION_JSON).get();
-//        allHomes = response.readEntity(JsonArray.class);
-//        System.err.println("allHomes " + allHomes);
-//
-//        // Create a family
-//        System.out.println("check create Family");
-//        // Create a home
-//        // Create a home
-//        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
-//        JsonObject accountToCreate = accountBuilder.
-//                add("user", "admin").
-//                add("password", "password").build();
-//        
-//        postResponse = this.provider.target().request().post(Entity.json(homeToCreate, accountToCreate));        
-//        System.out.println("Create a home: dagg daggstigen 20");
-//        
-//        // Create 
-//        Response postResponse = this.provider.target().request().post(Entity.json(homeToCreate));
-//        assertThat(postResponse.getStatus(),is(201));
-//        String location = postResponse.getHeaderString("Location");
-//        System.out.println("Check that we have a home dagg: " +location);
-//        
-//        // Create 
-//        Response postResponse = this.provider.target().request().post(Entity.json(homeToCreate));
-//        assertThat(postResponse.getStatus(),is(201));
-//        String location = postResponse.getHeaderString("Location");
-//        System.out.println("Check that we have a home dagg: " +location);
-        
-        
         // delete
 //        System.out.println("check delete");
 //        Response deleteResponse = this.provider.target().
@@ -187,8 +121,8 @@ public class FamilyResourceIT {
 //        // listAll again after delete
 //        response = provider.target().
 //                request(MediaType.APPLICATION_JSON).get();
-//        allHomes = response.readEntity(JsonArray.class);
-//        System.err.println("allHomes " + allHomes);
+//        allFamilys = response.readEntity(JsonArray.class);
+//        System.err.println("allFamilys " + allFamilys);
     }
 
 }
