@@ -48,8 +48,8 @@ public class FamilyService {
        return this.em.find((Account.class), user); 
     }
     
-    public void delete(String name) {
-        Family reference = this.em.getReference(Family.class, name);
+    public void delete(String home) {
+        Family reference = this.findByHome(home);
         this.em.remove(reference);
     }
 }
