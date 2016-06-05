@@ -1,5 +1,6 @@
 package se.rosscom.shopper.business.family.entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ import se.rosscom.shopper.business.home.entity.Home;
 @NamedQuery(name = Family.findAll, query = " SELECT t from Family t")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class Family {
+public class Family implements Serializable {
 
     static final String PREFIX = "family.entity.Family.";
     public static final String findAll = PREFIX + "findALl";
