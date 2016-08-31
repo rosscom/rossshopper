@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.family.boundary.FamilyService;
-import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
