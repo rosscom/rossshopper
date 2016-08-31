@@ -38,6 +38,15 @@ public class AccountService {
         account.setLoggedIn(loggedin);
         return account;
     }
+
+    public boolean login(Account account, boolean loggedin) {
+        Account checkAccount = this.findByUser(account.getUser());
+        if (account.getPassword().equals(checkAccount.getPassword())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public void delete(String user) {
         Account reference = this.em.getReference(Account.class, user);
