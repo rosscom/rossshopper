@@ -18,8 +18,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import se.rosscom.shopper.business.account.boundary.AccountService;
+import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
-import se.rosscom.shopper.business.home.entity.Home;
 
 /**
  *
@@ -35,23 +37,21 @@ public class FamilyResource {
     @Inject
     HomeService homeService;
 
+    @Inject
+    AccountService accountService;
+
     @POST
-    public Response save(Family family, @Context UriInfo info) {
-        Family saveFamily = familyService.save(family);  
-        Long familyId = saveFamily.getFamilyId();
-        URI uri = info.getAbsolutePathBuilder().path("/"+familyId).build();
+    public Response save(AccountHomepk accountHomepk, @Context UriInfo info) {
+        Family saveFamily = familyService.save(accountHomepk);  
+        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUser()).build();
         return Response.created(uri).build();
-    }
-    @GET
-    @Path("{id}")
-    public Family find(@PathParam("id") long id) {
-        return familyService.findById(id);
     }
 
     @GET
-    @Path("{home}")
-    public Family findByHome(@PathParam("home") String home) {
-        return familyService.findByHome(home);
+    @Path("{user}")
+    public List<Family> findByUser(@PathParam("user") String user) {
+        Account acount = accountService.findByUser(user);
+        return familyService.findByUser(acount);
     }
 
     @GET

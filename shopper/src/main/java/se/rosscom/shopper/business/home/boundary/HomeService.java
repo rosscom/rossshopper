@@ -38,8 +38,9 @@ public class HomeService {
     // family
     public Family save(Home home, Account account) {
         Family family = new Family();
-        family.setAccount(account);
-        family.setHome(home);
+//        family.setId(;
+//        family.setAccount(account);
+//        family.setHome(home);
         return this.em.merge(family);
     }
     

@@ -31,11 +31,13 @@ public class Account implements Serializable {
     private String user;
     private String password;
     private Boolean loggedIn;
+    private String choosedHome;
 
     public Account(String user, String password) {
         this.user = user;
         this.password = password;
         this.loggedIn = false;
+        this.choosedHome = null;
     }
 
     public Account() {
@@ -64,6 +66,16 @@ public class Account implements Serializable {
     public void setLoggedIn(Boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
+    public Boolean getLoggedIn() {
+        return loggedIn;
+    }
     
-    
+    public String getChoosedHome() {
+        return choosedHome;
+    }
+
+    public void setChoosedHome(String choosedHome) {
+        this.choosedHome = choosedHome;
+    } 
 }

@@ -8,8 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javax.inject.Inject;
 
@@ -19,9 +17,9 @@ import javax.inject.Inject;
 public class LoginController extends AnchorPane implements Initializable {
 
     @FXML
-    TextField userId;
+    TextFieldExtended userId;
     @FXML
-    PasswordField password;
+    PasswordFieldExtended password;
     @FXML
     Button login;
     @FXML
@@ -34,8 +32,8 @@ public class LoginController extends AnchorPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         errorMessage.setText("");
-        userId.setPromptText("demo");
-        password.setPromptText("demo");
+        userId.setPromptText("Användare");
+        password.setPromptText("Lösenord");
         authenticator.initClient();
         
     }

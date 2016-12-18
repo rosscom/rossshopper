@@ -34,6 +34,9 @@ public class AccountResource {
 
     @POST
     public Response save(Account account, @Context UriInfo info) {
+        if(account != null && account.isLoggedIn() == null) {
+            account.setLoggedIn(Boolean.FALSE);
+        }
         Account savedAccount = accountService.save(account);   
         String user = savedAccount.getUser();
         URI uri = info.getAbsolutePathBuilder().path("/"+user).build();
@@ -54,6 +57,9 @@ public class AccountResource {
     @PUT
     @Path("{user}")
     public Account update(@PathParam("user") String user, Account account) {
+        if(account != null && account.isLoggedIn() == null) {
+            account.setLoggedIn(Boolean.FALSE);
+        }
         account.setUser(user);
         return accountService.save(account);
     }
@@ -61,7 +67,7 @@ public class AccountResource {
     // Subresource
     @PUT
     @Path("{user}/login")
-    public Account login(@PathParam("user") String user, JsonObject statusUpdate) {
+    public Account checklogin(@PathParam("user") String user, JsonObject statusUpdate) {
         Boolean loggedin = statusUpdate.getBoolean("loggedIn");
         return accountService.login(user, loggedin);
     }

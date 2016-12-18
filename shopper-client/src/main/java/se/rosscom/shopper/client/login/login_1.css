@@ -88,10 +88,41 @@
         rgba(255,255,255,0));
 }
 
+.text-field, .text-area {
+    -fx-font-size: 18;
+    -fx-background-color:
+        rgba(255, 255, 255, 0.3),
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8) 50%),
+        rgb(218, 226, 224);
+    -fx-background-insets: 0 0 -1 0, 0, 1.5;
+    -fx-background-radius: 6, 5, 4;
+    -fx-padding: 6 10 4 10;
+    -fx-effect: innershadow( gaussian, rgba(0, 0, 0, 0.8), 5, 0, 0, 2 );
+    -fx-font-family: "Arial";
+}
+
+.text-area {
+    -fx-padding: 6 5 6 5;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-prompt-text-fill:
+        rgb(128,128,128);
+    -fx-background-color:
+        rgba(235, 235, 235, 0.5),
+        rgba(0, 0, 0, 0.4),
+        rgb(255, 255, 255);
+}
 .material-field {
-    -material-design-color            : rgb(255, 255, 255);
-    -material-design-color-transparent: rgb(255, 255, 255);
-    -prompt-text-color                : rgb(255, 255, 255);
+    -material-design-color            : rgba(235, 235, 235, 0.5),
+                                        rgba(0, 0, 0, 0.4),
+                                        rgb(255, 255, 255);
+    -material-design-color-transparent: rgba(235, 235, 235, 0.5),
+                                        rgba(0, 0, 0, 0.4),
+                                        rgb(255, 255, 255);
+    -prompt-text-color                : rgba(235, 235, 235, 0.5),
+                                        rgba(0, 0, 0, 0.4),
+                                        rgb(255, 255, 255);
 }
 .material-field > .prompt-text {
     -fx-fill: -prompt-text-color;
@@ -105,15 +136,15 @@
 
 .text-input {
     -fx-font-family        : "Arial"; /* Roboto Regular */
-    -fx-font-size          : 15px;
-    -fx-text-fill          : -material-design-color;
+    -fx-font-size          : 13px;
+    -fx-text-fill          : -fx-text-inner-color;
     -fx-highlight-fill     : derive(-fx-control-inner-background,-20%);
-    -fx-highlight-text-fill: -material-design-color;
+    -fx-highlight-text-fill: -fx-text-inner-color;
     -fx-prompt-text-fill   : transparent;
     -fx-background-color   : transparent;
     -fx-background-insets  : 0;
     -fx-background-radius  : 0;
-    -fx-border-color       : transparent transparent rgb(255, 255, 255) transparent;
+    -fx-border-color       : transparent transparent #ffffff transparent;
     -fx-border-width       : 1;
     -fx-border-insets      : 0 0 1 0;
     -fx-border-style       : hidden hidden solid hidden;
@@ -123,7 +154,7 @@
 .text-input:focused {
     -fx-highlight-fill     : -material-design-color-transparent;
     -fx-highlight-text-fill: -material-design-color;
-    -fx-text-fill          : -material-design-color;
+    -fx-text-fill          : -fx-text-inner-color;
     -fx-background-color   : transparent;
     -fx-background-insets  : 0;
     -fx-background-radius  : 0;
@@ -138,7 +169,7 @@
     -fx-background-color: transparent;
     -fx-text-fill       : derive(-fx-text-base-color, 35%);
     -fx-border-style    : segments(2, 3)  line-cap butt;
-    -fx-border-color    : transparent transparent rgb(255, 255, 255) transparent;
+    -fx-border-color    : transparent transparent #ffffff transparent;
 }
 .text-input:focused:readonly {
     -fx-text-fill   : derive(-fx-text-base-color, 35%);

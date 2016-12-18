@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.rosscom.shopper.business.home.entity;
 
 import java.io.Serializable;
@@ -54,5 +49,5 @@ public class Home implements Serializable {
     public void setAdress(String adress) {
         this.adress = adress;
     }
-    
 }
+
