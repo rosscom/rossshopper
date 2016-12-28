@@ -43,7 +43,7 @@ public class FamilyResource {
     @POST
     public Response save(AccountHomepk accountHomepk, @Context UriInfo info) {
         Family saveFamily = familyService.save(accountHomepk);  
-        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUser()).build();
+        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUserId()).build();
         return Response.created(uri).build();
     }
 

@@ -27,7 +27,7 @@ public class FamilyService {
     
     // family
     public Family save(AccountHomepk family) {
-        Account acc = this.em.find((Account.class), family.getAccount().getUser());
+        Account acc = this.em.find((Account.class), family.getAccount().getUserId());
         acc.setChoosedHome(family.getHome().getName());
         return this.em.merge(new Family(family));
     }
@@ -50,7 +50,7 @@ public class FamilyService {
     
     public List<Family> findByUser(Account account) {
         TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
-        typedQuery.setParameter("user", account.getUser());
+        typedQuery.setParameter("user", account.getUserId());
         List<Family> results = typedQuery.getResultList();
         	
         return results;

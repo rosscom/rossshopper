@@ -28,13 +28,15 @@ public class Account implements Serializable {
     public static final String findAll = PREFIX + "findALl";
     
     @Id
-    private String user;
+    private String userId;
     private String password;
+    private String mail;
+
     private Boolean loggedIn;
     private String choosedHome;
 
-    public Account(String user, String password) {
-        this.user = user;
+    public Account(String userId, String password) {
+        this.userId = userId;
         this.password = password;
         this.loggedIn = false;
         this.choosedHome = null;
@@ -43,16 +45,16 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public String getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setPassword(String password) {
@@ -77,5 +79,13 @@ public class Account implements Serializable {
 
     public void setChoosedHome(String choosedHome) {
         this.choosedHome = choosedHome;
-    } 
+    }
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
 }

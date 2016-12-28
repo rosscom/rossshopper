@@ -40,7 +40,7 @@ public class AccountService {
     }
 
     public boolean login(Account account, boolean loggedin) {
-        Account checkAccount = this.findByUser(account.getUser());
+        Account checkAccount = this.findByUser(account.getUserId());
         if (account.getPassword().equals(checkAccount.getPassword())) {
             return true;
         } else {

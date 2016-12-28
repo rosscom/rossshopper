@@ -21,7 +21,7 @@ import se.rosscom.shopper.business.home.entity.Home;
     @NamedQuery(name = Family.findAll, 
                 query = " SELECT t from Family t"),
     @NamedQuery(name = Family.findByUser,
-                query="SELECT c FROM Family c WHERE c.id.account.user = :user"),
+                query="SELECT c FROM Family c WHERE c.id.account.userId = :userId"),
 }) 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement

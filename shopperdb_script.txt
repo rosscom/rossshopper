@@ -1,0 +1,47 @@
+create table Account 
+(
+	userId VARCHAR(25) NOT NULL,
+	password VARCHAR(25) NOT NULL,
+	mail VARCHAR(100) NOT NULL,
+	loggedIn BOOLEAN,
+	choosedHome VARCHAR(25),
+	PRIMARY KEY (userId)
+)
+
+create table Home
+(
+	name VARCHAR(25) NOT NULL,
+	adress VARCHAR(45),
+	PRIMARY KEY (name)
+)
+
+
+
+create table Family
+(
+	userId VARCHAR(25) NOT NULL,
+	name VARCHAR(25) NOT NULL,
+  	PRIMARY KEY (userId, name),
+	FOREIGN KEY (userId) REFERENCES Account (userId),
+	FOREIGN KEY (name) REFERENCES Home (name)
+
+)
+
+
+create table ListDetail
+(
+	id int NOT NULL,
+	userId VARCHAR(25) NOT NULL,
+	name VARCHAR(25) NOT NULL,
+	item VARCHAR(50), 
+	PRIMARY KEY (id),
+	FOREIGN KEY (userId, name) REFERENCES Family (userId, name)
+) 
+
+
+insert into Account values ('admin', 'pass', 'ulf@rosscom.org', FALSE, null)
+insert into Home values ('dagg', 'daggstigen')
+insert into Family values ('admin', 'dagg')
+insert into ListDetail values (0,'admin', 'dagg', 'falukorv')
+	
+	
