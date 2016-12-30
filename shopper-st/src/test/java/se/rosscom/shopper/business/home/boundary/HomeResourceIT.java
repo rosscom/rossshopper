@@ -39,35 +39,32 @@ public class HomeResourceIT {
         JsonObject homeToCreate = homeBuilder.
                 add("name", "dagg").
                 add("adress", "daggstigen 20").build();
-        System.out.println("Create a home: dagg daggstigen 20");
         
         // Create 
         Response postResponse = this.provider.target().request().post(Entity.json(homeToCreate));
         assertThat(postResponse.getStatus(),is(201));
         String location = postResponse.getHeaderString("Location");
-        System.out.println("Check that we have a home dagg: " +location);
-        
+        System.out.println("Create a home                 : ok "+ homeToCreate.toString());
+        System.out.println("dagg location                 : " +location);
+                
         // Find with name
-        System.out.println("Find home dagg");
         JsonObject daggHome = this.provider.client().
                target(location).
                request(MediaType.APPLICATION_JSON).
                get(JsonObject.class);
         assertTrue(daggHome.getString("name").contains("dagg"));        
-        System.out.println("daggHome: " + daggHome.getString("name") + " " + daggHome.getString("adress"));
+        System.out.println("Find dagg home                : ok " + daggHome.toString());
 
         // listAll
-        System.out.println("list all");
         Response response = provider.target().
                 request(MediaType.APPLICATION_JSON).get();
         assertThat(response.getStatus(),is(200));
         
         JsonArray allHomes = response.readEntity(JsonArray.class);
-        System.err.println("allHomes " + allHomes);
+        System.err.println("list allHomes                 : " + allHomes);
         assertFalse(allHomes.isEmpty());
         
         // Update
-        System.out.println("check update");
         JsonObjectBuilder updateBuilder =  Json.createObjectBuilder();
         JsonObject updated = updateBuilder.
                 add("adress", "huddinge").build();
@@ -84,17 +81,17 @@ public class HomeResourceIT {
                 request(MediaType.APPLICATION_JSON).
                 get(JsonObject.class);
         assertTrue(updateHome.getString("adress").contains("huddinge"));  
+        System.out.println("check update                  : ok "+ updateHome.toString());
 
         // listAll again
         response = provider.target().
                 request(MediaType.APPLICATION_JSON).get();
         allHomes = response.readEntity(JsonArray.class);
-        System.err.println("allHomes " + allHomes);
+        System.err.println("list allHomes                 : " + allHomes);
 
         
         
         // delete
-        System.out.println("check delete");
         Response deleteResponse = this.provider.target().
                path("dagg").
                request(MediaType.APPLICATION_JSON).delete();
@@ -104,7 +101,7 @@ public class HomeResourceIT {
         response = provider.target().
                 request(MediaType.APPLICATION_JSON).get();
         allHomes = response.readEntity(JsonArray.class);
-        System.err.println("allHomes " + allHomes);
+        System.err.println("list allHomes                 : " + allHomes);
     }
 
 }

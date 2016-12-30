@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**

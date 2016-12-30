@@ -5,6 +5,7 @@
  */
 package se.rosscom.shopper.business.account.entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
@@ -21,35 +22,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQuery(name = Account.findAll, query = " SELECT t from Account t")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class Account {
+public class Account implements Serializable {
             
     static final String PREFIX = "account.entity.Account.";
     public static final String findAll = PREFIX + "findALl";
     
     @Id
-    private String user;
+    private String userId;
     private String password;
-    private Boolean loggedIn;
+    private String mail;
 
-    public Account(String user, String password) {
-        this.user = user;
+    private Boolean loggedIn;
+    private String choosedHome;
+
+    public Account(String userId, String password) {
+        this.userId = userId;
         this.password = password;
         this.loggedIn = false;
+        this.choosedHome = null;
     }
 
     public Account() {
     }
 
-    public String getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setPassword(String password) {
@@ -63,6 +68,24 @@ public class Account {
     public void setLoggedIn(Boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
+    public Boolean getLoggedIn() {
+        return loggedIn;
+    }
     
-    
+    public String getChoosedHome() {
+        return choosedHome;
+    }
+
+    public void setChoosedHome(String choosedHome) {
+        this.choosedHome = choosedHome;
+    }
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
 }
