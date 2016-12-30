@@ -1,9 +1,9 @@
 package se.rosscom.shopper.business.family.entity;
 
+import java.io.Serializable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,51 +17,42 @@ import se.rosscom.shopper.business.home.entity.Home;
  * 1, dagg, ulf@rosscom.org
  */
 @Entity
-@NamedQuery(name = Family.findAll, query = " SELECT t from Family t")
+@NamedQueries({
+    @NamedQuery(name = Family.findAll, 
+                query = " SELECT t from Family t"),
+    @NamedQuery(name = Family.findByUser,
+                query="SELECT c FROM Family c WHERE c.id.account.userId = :userId"),
+}) 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class Family {
+public class Family implements Serializable {
 
     static final String PREFIX = "family.entity.Family.";
     public static final String findAll = PREFIX + "findALl";
+    public static final String findByUser = PREFIX + "findByUser";
     
-    @Id
-    @GeneratedValue
-    private long familyId;
-    
-    @ManyToOne
-    private Home home;
-    
-    @ManyToOne
-    private Account account;
-    
+    @EmbeddedId
+    private AccountHomepk id = new AccountHomepk();
 
-    public Family(Home home, Account account) {
-        this.home = home;
-        this.account = account;
+    
+    public Family(AccountHomepk id) {
+        this.id = id;
+
+    }
+    public Family(Account acc, Home home) {
+        this.id.setAccount(acc);
+        this.id.setHome(home);
+
     }
 
     public Family() {
     }
 
-    public long getFamilyId() {
-        return familyId;
+    public AccountHomepk getId() {
+            return id;
     }
 
-    public Home getHome() {
-        return home;
-    }
-
-    public void setHome(Home home) {
-        this.home = home;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-    
+    public void setId(AccountHomepk id) {
+        this.id = id;
+    } 
 }
