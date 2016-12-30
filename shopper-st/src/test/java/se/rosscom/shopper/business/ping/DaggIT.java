@@ -28,6 +28,7 @@ public class DaggIT {
         this.client = ClientBuilder.newClient();
         this.tut = this.client.target("http://localhost:8080/shopper/api/dagg");
        
+       
         
     }
     

@@ -48,7 +48,7 @@
         <module>shopper</module>
         <module>shopper-st</module>
         <module>shared</module>
-    <module>shopper-client</module>
+        <module>shopper-client</module>
   </modules>    
 
     <properties>
