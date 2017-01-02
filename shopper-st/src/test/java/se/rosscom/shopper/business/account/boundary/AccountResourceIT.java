@@ -41,7 +41,7 @@ public class AccountResourceIT {
         // Create an account json
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
-                add("user", "admin").
+                add("userId", "admin").
                 add("password", "password").build();
         
         // Create 
@@ -59,9 +59,9 @@ public class AccountResourceIT {
                target(location).
                request(MediaType.APPLICATION_JSON).
                get(JsonObject.class);
-        assertTrue(adminAccount.getString("user").contains("admin"));   
+        assertTrue(adminAccount.getString("userId").contains("admin"));   
         System.out.println("Find admin account              : ok " + adminAccount.toString());
-        System.out.println("adminAccount                    : " + adminAccount.getString("user") + " " + adminAccount.getString("password"));
+        System.out.println("adminAccount                    : " + adminAccount.getString("userId") + " " + adminAccount.getString("password"));
 
         
         // listAll
@@ -146,7 +146,7 @@ public class AccountResourceIT {
         // Find admin account
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToFind = accountBuilder.
-                add("user", "admin").
+                add("userId", "admin").
                 add("password", "password").build();
         System.out.println("Find this account: dagg daggstigen 20");
         

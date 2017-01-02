@@ -25,8 +25,8 @@ public class AccountService {
         return this.em.merge(account);
     }
     
-    public Account findByUser(String user) {
-       return this.em.find((Account.class), user); 
+    public Account findByUser(String userId) {
+       return this.em.find((Account.class), userId); 
     }
 
     public List<Account> all() {
