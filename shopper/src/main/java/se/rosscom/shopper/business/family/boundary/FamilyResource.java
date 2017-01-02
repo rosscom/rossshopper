@@ -48,9 +48,9 @@ public class FamilyResource {
     }
 
     @GET
-    @Path("{user}")
-    public List<Family> findByUser(@PathParam("user") String user) {
-        Account acount = accountService.findByUser(user);
+    @Path("{userId}")
+    public List<Family> findByUser(@PathParam("userId") String userId) {
+        Account acount = accountService.findByUser(userId);
         return familyService.findByUser(acount);
     }
 
