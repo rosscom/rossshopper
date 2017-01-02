@@ -54,7 +54,7 @@ public class FamilyResourceIT {
         // Create an account
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
-                add("user", "admin").
+                add("userId", "admin").
                 add("password", "password").build();
 
         Response postResponseAccount = this.providerAccount.target().request().post(Entity.json(accountToCreate));
@@ -66,7 +66,7 @@ public class FamilyResourceIT {
                target(locationAccount).
                request(MediaType.APPLICATION_JSON).
                get(JsonObject.class);
-        assertTrue(adminAccount.getString("user").contains("admin"));   
+        assertTrue(adminAccount.getString("userId").contains("admin"));   
         System.out.println("Find admin account            : ok " + adminAccount.toString());
         
         // Create a family
@@ -98,18 +98,18 @@ public class FamilyResourceIT {
         // Find admin account
         accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToFind = accountBuilder.
-                add("user", "admin").
+                add("userId", "admin").
                 add("password", "password").build();
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
 
         JsonArray accountFamily = this.providerFamily.client().
                 target(location).
-                path(accountToFind.getString("user")).
+                path(accountToFind.getString("userId")).
                 request(MediaType.APPLICATION_JSON).
                 get(JsonArray.class);
         assertTrue(accountFamily.size()>0);
-        System.out.println("                              :"+accountToFind.getString("user"));
+        System.out.println("                              :"+accountToFind.getString("userId"));
         System.err.println("list family                   : " + accountFamily);
        
 
