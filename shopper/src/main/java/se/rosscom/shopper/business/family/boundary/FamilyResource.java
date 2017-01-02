@@ -49,9 +49,16 @@ public class FamilyResource {
 
     @GET
     @Path("{userId}")
-    public List<Family> findByUser(@PathParam("userId") String userId) {
-        Account acount = accountService.findByUser(userId);
-        return familyService.findByUser(acount);
+//    public List<Family> findByUser(@PathParam("userId") String userId) {
+    public Response findByUser(@PathParam("userId") String userId) {
+        Account account = accountService.findByUser(userId);
+        if (account == null) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "user: " + userId + " dont exist").
+                    build();
+        } else {
+            return Response.ok(familyService.findByUser(account)).build();
+        }
     }
 
     @GET

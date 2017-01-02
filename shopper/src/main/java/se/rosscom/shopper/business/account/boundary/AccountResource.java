@@ -45,8 +45,15 @@ public class AccountResource {
 
     @GET
     @Path("{user}")
-    public Account find(@PathParam("user") String user) {
-        return accountService.findByUser(user);
+    public Response find(@PathParam("user") String user) {
+        Account account = accountService.findByUser(user);
+        if (account == null) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "user: " + user + " dont exist").
+                    build();
+        } else {
+            return Response.ok(account).build();
+        }
     }
 
     @GET

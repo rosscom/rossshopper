@@ -26,7 +26,11 @@ public class AccountService {
     }
     
     public Account findByUser(String userId) {
-       return this.em.find((Account.class), userId); 
+       Account account = this.em.find((Account.class), userId); 
+       if (account == null) {
+           return null;
+       }
+       return account;
     }
 
     public List<Account> all() {
