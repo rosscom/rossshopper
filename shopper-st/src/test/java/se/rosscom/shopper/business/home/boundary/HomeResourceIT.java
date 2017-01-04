@@ -92,10 +92,10 @@ public class HomeResourceIT {
         
         
         // delete
-        Response deleteResponse = this.provider.target().
-               path("dagg").
-               request(MediaType.APPLICATION_JSON).delete();
-        assertThat(deleteResponse.getStatus(), is(204));
+//        Response deleteResponse = this.provider.target().
+//               path("dagg").
+//               request(MediaType.APPLICATION_JSON).delete();
+//        assertThat(deleteResponse.getStatus(), is(204));
         
         // listAll again after delete
         response = provider.target().

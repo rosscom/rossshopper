@@ -21,8 +21,10 @@ public class AccountService {
     @PersistenceContext
     EntityManager em;
 
+
     public Account save(Account account){
-        return this.em.merge(account);
+        Account savedAcccount = this.em.merge(account);
+        return savedAcccount;
     }
     
     public Account findByUser(String userId) {

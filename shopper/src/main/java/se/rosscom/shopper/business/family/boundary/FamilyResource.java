@@ -49,7 +49,6 @@ public class FamilyResource {
 
     @GET
     @Path("{userId}")
-//    public List<Family> findByUser(@PathParam("userId") String userId) {
     public Response findByUser(@PathParam("userId") String userId) {
         Account account = accountService.findByUser(userId);
         if (account == null) {
@@ -57,7 +56,14 @@ public class FamilyResource {
                     header("reason", "user: " + userId + " dont exist").
                     build();
         } else {
-            return Response.ok(familyService.findByUser(account)).build();
+            List<Family> famList = familyService.findByUser(account);
+            if (famList == null || (famList.isEmpty())) {
+                return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "user: " + userId + " dont exist").
+                    build();
+            } else {
+                return Response.ok(famList).build();
+            }
         }
     }
 

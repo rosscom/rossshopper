@@ -10,6 +10,8 @@ import javax.persistence.Persistence;
  
 import junit.framework.TestCase;
 import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.home.entity.Home;
  
  
 /**
@@ -23,13 +25,23 @@ public class AppTest extends TestCase {
  
 		entityManager = Persistence.createEntityManagerFactory("entityManager")
 				.createEntityManager();
- 
-		entityManager.getTransaction().begin();
- 
+                		
+                entityManager.getTransaction().begin();
+
+  
 		Account user = new Account("seconduser","pass");
-		entityManager.persist(user);
- 
-		entityManager.getTransaction().commit();
+		entityManager.merge(user);
+                System.err.println("user: "+ user);
+
+                Home home = new Home("landet","timmerdalen");
+		entityManager.merge(home);
+
+                Family family = new Family(user,home);
+		entityManager.merge(family);
+                
+                entityManager.getTransaction().commit();
+
+
 		entityManager.close();
 	}
 }

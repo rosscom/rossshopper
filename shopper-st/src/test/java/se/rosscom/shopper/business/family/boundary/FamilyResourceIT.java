@@ -128,6 +128,7 @@ public class FamilyResourceIT {
         assertThat(response.getStatus(), is(404));
         assertFalse(response.getHeaderString("reason").isEmpty());
         System.out.println("findOther missed              : ok "+response.getStatus() + " " + response.getHeaderString("reason") );
+        
 
         // delete todo
 //        System.out.println("check delete");
