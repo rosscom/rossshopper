@@ -23,25 +23,25 @@ public class AppTest extends TestCase {
  
 	public void testApp() {
  
-		entityManager = Persistence.createEntityManagerFactory("entityManager")
-				.createEntityManager();
-                		
-                entityManager.getTransaction().begin();
-
-  
-		Account user = new Account("seconduser","pass");
-		entityManager.merge(user);
-                System.err.println("user: "+ user);
-
-                Home home = new Home("landet","timmerdalen");
-		entityManager.merge(home);
-
-                Family family = new Family(user,home);
-		entityManager.merge(family);
-                
-                entityManager.getTransaction().commit();
-
-
-		entityManager.close();
+//		entityManager = Persistence.createEntityManagerFactory("entityManager")
+//				.createEntityManager();
+//                		
+//                entityManager.getTransaction().begin();
+//
+//  
+//		Account user = new Account("seconduser","pass");
+//		entityManager.merge(user);
+//                System.err.println("user: "+ user);
+//
+//                Home home = new Home("landet","timmerdalen");
+//		entityManager.merge(home);
+//
+//                Family family = new Family(user,home);
+//		entityManager.merge(family);
+//                
+//                entityManager.getTransaction().commit();
+//
+//
+//		entityManager.close();
 	}
 }

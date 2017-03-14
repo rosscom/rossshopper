@@ -63,6 +63,11 @@
             <artifactId>postgresql</artifactId>
             <version>9.4.1212.jre7</version>
         </dependency>
+          <dependency>
+            <groupId>com.airhacks</groupId>
+            <artifactId>jaxrs-cors</artifactId>
+            <version>0.0.2</version>
+        </dependency>    
     </dependencies>
     <build>
         <finalName>shopper</finalName>
