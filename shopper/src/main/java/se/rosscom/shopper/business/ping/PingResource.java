@@ -5,15 +5,25 @@
  */
 package se.rosscom.shopper.business.ping;
 
+import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.time.LocalDateTime;
 
-@Path("dagg")
-public class DaggResource {
+@Path("ping")
+public class PingResource {
+
+    @Inject
+    PingService pingService;
     
     @GET
-    public String get(){
-        return "rosscom";
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject get(){
+        return pingService.ping();
     }
     
 }
