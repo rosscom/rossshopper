@@ -1,30 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence              http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="dev" transaction-type="JTA">
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-      <property name="hibernate.hbm2ddl.auto" value="drop-and-create"/>
-    </properties>
-  </persistence-unit>
-  <!--    <persistence-unit name="entityManager">    -->
-  <!--        <provider>org.hibernate.ejb.HibernatePersistence</provider>  -->
-  <!-- Annotated entity classes -->
-  <!--        <class>se.rosscom.shopper.business.AppTest</class>      -->
-  <!--        <class>se.rosscom.shopper.business.account.entity.Account</class>   -->
-  <!--        <class>se.rosscom.shopper.business.home.entity.Home</class>        -->
-  <!--        <class>se.rosscom.shopper.business.family.entity.Family</class> -->
-  <!--        <class>se.rosscom.shopper.business.list.entity.ListDetail</class>   -->
-  <!--        <properties>                -->
-  <!--          <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/shopperdb"/>   -->
-  <!--          <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>            -->
-  <!--          <property name="hibernate.connection.username" value="postgres"/>                             -->
-  <!--          <property name="hibernate.connection.password" value="vik012"/>                               -->
-  <!--          <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>          -->
-  <!--          <property name="hibernate.connection.autocommit" value="true"/>                               -->
-  <!--          <property name="hibernate.hbm2ddl.auto" value="validate"/>                                    -->
-  <!--          <property name="hibernate.show_sql" value="true"/>                                            -->
-  <!--        </properties>                                                                   -->
-  <!-- </persistence-unit>                                                                   -->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="test" transaction-type="JTA">
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="show_sql" value="true"/>
+            <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+        </properties>
+    </persistence-unit>
 </persistence>
+
+
+
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<persistence version="2.1" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence              http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">-->
+  <!--<persistence-unit name="dev" transaction-type="JTA">-->
+    <!--<exclude-unlisted-classes>false</exclude-unlisted-classes>-->
+    <!--<properties>-->
+      <!--<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>-->
+      <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
+      <!--<property name="hibernate.hbm2ddl.auto" value="drop-and-create"/>-->
+    <!--</properties>-->
+  <!--</persistence-unit>-->
+  <!--&lt;!&ndash;    <persistence-unit name="entityManager">    &ndash;&gt;-->
+  <!--&lt;!&ndash;        <provider>org.hibernate.ejb.HibernatePersistence</provider>  &ndash;&gt;-->
+  <!--&lt;!&ndash; Annotated entity classes &ndash;&gt;-->
+  <!--&lt;!&ndash;        <class>se.rosscom.shopper.business.AppTest</class>      &ndash;&gt;-->
+  <!--&lt;!&ndash;        <class>se.rosscom.shopper.business.account.entity.Account</class>   &ndash;&gt;-->
+  <!--&lt;!&ndash;        <class>se.rosscom.shopper.business.home.entity.Home</class>        &ndash;&gt;-->
+  <!--&lt;!&ndash;        <class>se.rosscom.shopper.business.family.entity.Family</class> &ndash;&gt;-->
+  <!--&lt;!&ndash;        <class>se.rosscom.shopper.business.list.entity.ListDetail</class>   &ndash;&gt;-->
+  <!--&lt;!&ndash;        <properties>                &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/shopperdb"/>   &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>            &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.connection.username" value="postgres"/>                             &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.connection.password" value="vik012"/>                               &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>          &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.connection.autocommit" value="true"/>                               &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.hbm2ddl.auto" value="validate"/>                                    &ndash;&gt;-->
+  <!--&lt;!&ndash;          <property name="hibernate.show_sql" value="true"/>                                            &ndash;&gt;-->
+  <!--&lt;!&ndash;        </properties>                                                                   &ndash;&gt;-->
+  <!--&lt;!&ndash; </persistence-unit>                                                                   &ndash;&gt;-->
+<!--</persistence>-->
