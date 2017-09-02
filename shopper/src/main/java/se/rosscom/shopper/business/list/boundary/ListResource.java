@@ -12,9 +12,11 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.family.boundary.FamilyService;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
@@ -40,6 +42,20 @@ public class ListResource {
         return Response.created(uri).build();
     }
     
+    
+    @GET
+    @Path("{family}")
+    public Response find(@PathParam("family") String family) {
+        List<ListDetail> items = listService.findByFamily(family);
+        if (items == null || (items.isEmpty())) {
+            return Response.status(Response.Status.NOT_FOUND).
+                header("reason", "family: " + family + " dont exist").
+                build();
+        } else {
+            return Response.ok(items).build();
+        }
+    }
+
     @GET
     public List<ListDetail> all() {
         return listService.all();

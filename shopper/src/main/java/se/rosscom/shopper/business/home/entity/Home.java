@@ -15,8 +15,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @NamedQuery(name = Home.findAll, query = " SELECT t from Home t")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 public class Home implements Serializable {
 
     static final String PREFIX = "home.entity.Home.";

@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.home.entity.Home;
 
@@ -26,10 +25,8 @@ public class FamilyService {
     EntityManager em;
     
     // family
-    public Family save(AccountHomepk family) {
-        Account acc = this.em.find((Account.class), family.getAccount().getUserId());
-        acc.setChoosedHome(family.getHome().getName());
-        return this.em.merge(new Family(family));
+    public Family save(Home name, Account userId) {
+        return this.em.merge(new Family(name, userId));
     }
 
     public Family findByHome(String home) {

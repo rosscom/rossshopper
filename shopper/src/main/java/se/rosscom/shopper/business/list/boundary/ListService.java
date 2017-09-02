@@ -7,8 +7,11 @@ package se.rosscom.shopper.business.list.boundary;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
@@ -21,14 +24,26 @@ public class ListService {
     @PersistenceContext
     EntityManager em;
     
+    @Inject
+    ListItemEndpoint listItemEndpoint;
+    
     
     
     public ListDetail save(ListDetail list) {
-        return this.em.merge(list);
+        ListDetail listDetail = this.em.merge(list);
+        String message = "item: "+ listDetail.getId() + " " + listDetail.getItem();
+        System.out.println(message);
+        listItemEndpoint.sendMessage(message);
+        return listDetail;
     }
     
-    public ListDetail findByFamily(String family) {
-       return this.em.find((ListDetail.class), family); 
+    public List<ListDetail> findByFamily(String familyId) {
+        
+        TypedQuery<ListDetail> typedQuery = this.em.createNamedQuery(ListDetail.findByFamily,ListDetail.class);
+        typedQuery.setParameter("familyId", familyId);
+        List<ListDetail> results = typedQuery.getResultList();
+        return results;
+//       return this.em.find((ListDetail.class), family); 
     }
 
     public ListDetail findById(long id) {

@@ -94,6 +94,8 @@ public class ListResourceIT {
         System.out.println(familyToCreate.getJsonObject("home"));
         System.out.println(familyToCreate.getJsonObject("account"));
 
+        
+
         // listAll
         Response response = providerFamily.target().
                 request(MediaType.APPLICATION_JSON).get();
@@ -102,6 +104,14 @@ public class ListResourceIT {
         JsonArray allFamilys = response.readEntity(JsonArray.class);
         System.err.println("list allFamilys               : " + allFamilys);
         assertFalse(allFamilys.isEmpty());
+
+        // Find with family new test 170515 error
+//        JsonObject familyDaggAdmin = this.provider.client().
+//               target(location).
+//               request(MediaType.APPLICATION_JSON).
+//               get(JsonObject.class);
+//        assertTrue(familyDaggAdmin.getString("home").contains("dagg"));        
+//        System.out.println("Find family with dagg admin    : ok " + familyDaggAdmin.toString());
 
         // Find admin account
         accountBuilder =  Json.createObjectBuilder();

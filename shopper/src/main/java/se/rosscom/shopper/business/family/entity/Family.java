@@ -1,8 +1,10 @@
 package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,7 +23,7 @@ import se.rosscom.shopper.business.home.entity.Home;
     @NamedQuery(name = Family.findAll, 
                 query = " SELECT t from Family t"),
     @NamedQuery(name = Family.findByUser,
-                query="SELECT c FROM Family c WHERE c.id.account.userId = :userId"),
+                query="SELECT c FROM Family c WHERE c.userId.userId = :userId"),
 }) 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -31,28 +33,49 @@ public class Family implements Serializable {
     public static final String findAll = PREFIX + "findALl";
     public static final String findByUser = PREFIX + "findByUser";
     
-    @EmbeddedId
-    private AccountHomepk id = new AccountHomepk();
-
+    @Id
+    private Integer id;
     
-    public Family(AccountHomepk id) {
-        this.id = id;
-
+    @ManyToOne  
+    @JoinColumn(name="name", insertable = false, updatable = false, nullable=false)
+    private Home name;
+    
+    @ManyToOne  
+    @JoinColumn(name="user_id", insertable = false, updatable = false, nullable=false)
+    private Account userId;
+     
+    public Family(Home name, Account userId) {
+        this.name = name;
+        this.userId = userId;
     }
-    public Family(Account acc, Home home) {
-        this.id.setAccount(acc);
-        this.id.setHome(home);
 
-    }
 
     public Family() {
     }
 
-    public AccountHomepk getId() {
-            return id;
+    public Home getName() {
+        return name;
     }
 
-    public void setId(AccountHomepk id) {
+    public void setName(Home name) {
+        this.name = name;
+    }
+
+    public Account getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Account userId) {
+        this.userId = userId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
-    } 
+    }
+    
+    
 }

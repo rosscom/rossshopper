@@ -62,7 +62,7 @@ public class HomeResource {
     @POST
     public Response save(Home home, Account account, @Context UriInfo info) {
         Family family = homeService.save(home, account);  
-        URI uri = info.getAbsolutePathBuilder().path("/"+family.getId().getHome().getName()).build();
+        URI uri = info.getAbsolutePathBuilder().path("/"+family.getUserId()).build();
         return Response.created(uri).build();
     }
     

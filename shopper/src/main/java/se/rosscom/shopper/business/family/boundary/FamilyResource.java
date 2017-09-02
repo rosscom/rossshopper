@@ -6,7 +6,6 @@
 package se.rosscom.shopper.business.family.boundary;
 
 import se.rosscom.shopper.business.home.boundary.*;
-import java.net.URI;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,8 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.home.entity.Home;
 
 /**
  *
@@ -41,10 +40,11 @@ public class FamilyResource {
     AccountService accountService;
 
     @POST
-    public Response save(AccountHomepk accountHomepk, @Context UriInfo info) {
-        Family saveFamily = familyService.save(accountHomepk);  
-        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUserId()).build();
-        return Response.created(uri).build();
+    public Response save(Home home, Account account, @Context UriInfo info) {
+        Family saveFamily = familyService.save(home, account);  
+        //URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getName().build();
+        //return Response.created(uri).build();
+        return Response.ok().build();
     }
 
     @GET
