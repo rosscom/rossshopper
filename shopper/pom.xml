@@ -12,35 +12,9 @@
     <dependencies>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.0.1.Final</version>
-            <scope>provided</scope>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.10.Final</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.0.1.Final</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search</artifactId>
-            <version>5.0.1.Final</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
-<!--        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.3.2.GA</version>
-            <type>pom</type>
-        </dependency>
--->
-<!--        <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-jpamodelgen</artifactId>
-                <version>5.0.1.Final</version>
-        </dependency> -->
         <dependency>
             <groupId>org.open-dolphin</groupId>
             <artifactId>dolphin-server</artifactId>
@@ -81,7 +55,7 @@
             <artifactId>jboss-logging</artifactId>
             <version>3.3.0.Final</version>
             <scope>provided</scope>
-         </dependency> 
+         </dependency>
     </dependencies>
     <build>
         <finalName>shopper</finalName>

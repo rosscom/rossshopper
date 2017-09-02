@@ -40,8 +40,8 @@ public class FamilyResource {
     AccountService accountService;
 
     @POST
-    public Response save(Home home, Account account, @Context UriInfo info) {
-        Family saveFamily = familyService.save(home, account);  
+    public Response save() {
+//        Family saveFamily = familyService.save(home, account);
         //URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getName().build();
         //return Response.created(uri).build();
         return Response.ok().build();

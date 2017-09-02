@@ -12,3 +12,4 @@
 /shopper/target/
 /shopper-st/target/
 /shopper-ui/target/
+.DS_Store*
