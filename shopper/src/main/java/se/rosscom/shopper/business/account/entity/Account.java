@@ -6,10 +6,12 @@
 package se.rosscom.shopper.business.account.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -18,27 +20,26 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQuery(name = Account.findAll, query = " SELECT t from Account t")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class Account implements Serializable {
             
     static final String PREFIX = "account.entity.Account.";
     public static final String findAll = PREFIX + "findALl";
     
     @Id
-    @Column(name="user_id")
     private String userId;
     private String password;
     private String mail;
 
-    @Column(name="logged_in")
     private Boolean loggedIn;
-    @Column(name="choosed_home")
     private String choosedHome;
 
-    public Account(String userId, String password) {
+    public Account(String userId, String password, String choosedHome) {
         this.userId = userId;
         this.password = password;
         this.loggedIn = false;
-        this.choosedHome = null;
+        this.choosedHome = choosedHome;
     }
 
     public Account() {

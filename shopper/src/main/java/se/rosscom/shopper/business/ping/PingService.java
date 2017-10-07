@@ -20,11 +20,7 @@ public class PingService {
     }
 
     private boolean checkDb() {
-        Object res = em.createNativeQuery("SELECT 1 ").getSingleResult();
-        if (res instanceof Integer) {
-            return (Integer) res == 1;
-        }
-        System.out.println("Something went terrible wrong");
-        return false;
+        return em.isOpen();
+
     }
 }

@@ -41,7 +41,8 @@ public class AccountResourceIT {
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
                 add("userId", "admin").
-                add("password", "password").build();
+                add("password", "password").
+                add("choosedHome", "ej valt").build();
         
         // Create 
         Response postResponse = this.provider.target().

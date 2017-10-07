@@ -121,6 +121,7 @@ public class ListResourceIT {
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
 
+        /* TODO
         JsonArray accountFamily = this.providerFamily.client().
                 target(location).
                 path(accountToFind.getString("userId")).
@@ -129,7 +130,8 @@ public class ListResourceIT {
         assertTrue(accountFamily.size()>0);
         System.out.println("                              :"+accountToFind.getString("userId"));
         System.err.println("list family                   : " + accountFamily);
-  
+        
+
         // listAll
         response = provider.target().
                 request(MediaType.APPLICATION_JSON).get();
@@ -137,6 +139,8 @@ public class ListResourceIT {
         
         JsonArray allListDetail = response.readEntity(JsonArray.class);
         System.err.println("allListDetail                 : ok " + allListDetail);
+
+        */
 //        assertFalse(allListDetail.isEmpty());
         
 

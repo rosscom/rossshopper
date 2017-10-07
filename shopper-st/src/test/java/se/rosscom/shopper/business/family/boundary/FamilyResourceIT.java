@@ -102,7 +102,7 @@ public class FamilyResourceIT {
                 add("password", "password").build();
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
-
+/* TDOD
         JsonArray accountFamily = this.providerFamily.client().
                 target(location).
                 path(accountToFind.getString("userId")).
@@ -112,6 +112,7 @@ public class FamilyResourceIT {
         System.out.println("                              :"+accountToFind.getString("userId"));
         System.err.println("list family                   : " + accountFamily);
        
+*/
         // Find other account
         accountBuilder =  Json.createObjectBuilder();
         JsonObject accountNotFind = accountBuilder.
