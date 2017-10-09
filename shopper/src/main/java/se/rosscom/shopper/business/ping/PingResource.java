@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class PingResource {
 
     @Inject
-    PingService pingService;
+    private PingService pingService;
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
