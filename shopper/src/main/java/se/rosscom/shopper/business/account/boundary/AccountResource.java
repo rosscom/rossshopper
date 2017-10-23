@@ -9,13 +9,13 @@ import java.net.URI;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.authentication.boundary.Secured;
 
 /**
  *
@@ -26,7 +26,7 @@ import se.rosscom.shopper.business.account.entity.Account;
 public class AccountResource {
     
     @Inject
-    AccountService accountService;
+    private AccountService accountService;
 
     @POST
     public Response save(Account account, @Context UriInfo info) {
@@ -52,6 +52,7 @@ public class AccountResource {
         }
     }
 
+    @Secured
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Account> all() {
@@ -68,14 +69,6 @@ public class AccountResource {
         return accountService.save(account);
     }
 
-    // Subresource
-    @PUT
-    @Path("{user}/login")
-    public Account checklogin(@PathParam("user") String userId, JsonObject statusUpdate) {
-        Boolean loggedin = statusUpdate.getBoolean("loggedIn");
-        return accountService.login(userId, loggedin);
-    }
-    
     @DELETE
     @Path("{user}")
     public void delete(@PathParam("user") String userId) {

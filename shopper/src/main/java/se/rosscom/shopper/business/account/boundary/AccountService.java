@@ -19,7 +19,7 @@ import se.rosscom.shopper.business.account.entity.Account;
 public class AccountService {
   
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
 
     public Account save(Account account){
@@ -33,6 +33,13 @@ public class AccountService {
            return null;
        }
        return account;
+    }
+
+    public Account findByUserName(final String userName) {
+        List<Account> resultList = em.createQuery("select a from Account a where a.userName = :userName", Account.class)
+                .setParameter("userName", userName)
+                .getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
     }
 
     public List<Account> all() {
