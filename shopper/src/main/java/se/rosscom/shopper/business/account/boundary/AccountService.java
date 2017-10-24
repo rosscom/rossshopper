@@ -9,9 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.Family;
 
 /**
  *
@@ -21,7 +19,7 @@ import se.rosscom.shopper.business.family.entity.Family;
 public class AccountService {
   
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
 
     public Account save(Account account){
@@ -37,10 +35,17 @@ public class AccountService {
        return account;
     }
 
+
     public List<Account> findByLoggedIn(String loggedIn) {
    //     TypedQuery<Account> typedQuery = this.em.createNamedQuery(Account.findByLoggedIn, Account.class).getResultList();
         
         return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
+    }
+    public Account findByUserName(final String userName) {
+        List<Account> resultList = em.createQuery("select a from Account a where a.userName = :userName", Account.class)
+                .setParameter("userName", userName)
+                .getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
     }
 
     public List<Account> all() {
