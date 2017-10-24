@@ -16,3 +16,4 @@
 /shopper/src/main/java/se/rosscom/shopper/business/Boundary.java
 /shopper/src/main/java/se/rosscom/shopper/business/DatasourceSelector.java
 /shopper/src/main/resources/META-INF/persistence.xml.txt
+/shopper-uix/target/

@@ -9,7 +9,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.family.entity.Family;
 
 /**
  *
@@ -33,6 +35,12 @@ public class AccountService {
            return null;
        }
        return account;
+    }
+
+    public List<Account> findByLoggedIn(String loggedIn) {
+   //     TypedQuery<Account> typedQuery = this.em.createNamedQuery(Account.findByLoggedIn, Account.class).getResultList();
+        
+        return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
     }
 
     public List<Account> all() {

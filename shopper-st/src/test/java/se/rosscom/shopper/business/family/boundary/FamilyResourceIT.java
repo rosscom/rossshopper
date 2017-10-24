@@ -62,6 +62,8 @@ public class FamilyResourceIT {
         String locationAccount = postResponseAccount.getHeaderString("Location");
         System.out.println("Create an account             : ok "+ accountToCreate.toString());
 
+        
+        // Find admin account
         JsonObject adminAccount = this.provider.client().
                target(locationAccount).
                request(MediaType.APPLICATION_JSON).
@@ -102,17 +104,17 @@ public class FamilyResourceIT {
                 add("password", "password").build();
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
-/* TDOD
-        JsonArray accountFamily = this.providerFamily.client().
-                target(location).
-                path(accountToFind.getString("userId")).
-                request(MediaType.APPLICATION_JSON).
-                get(JsonArray.class);
-        assertTrue(accountFamily.size()>0);
-        System.out.println("                              :"+accountToFind.getString("userId"));
-        System.err.println("list family                   : " + accountFamily);
+        // TODO 
+//        JsonArray accountFamily = this.providerFamily.client().
+//                target(location).
+//                path(accountToFind.getString("userId")).
+//                request(MediaType.APPLICATION_JSON).
+//                get(JsonArray.class);
+//        assertTrue(accountFamily.size()>0);
+//        System.out.println("                              :"+accountToFind.getString("userId"));
+//        System.err.println("list family                   : " + accountFamily);
        
-*/
+
         // Find other account
         accountBuilder =  Json.createObjectBuilder();
         JsonObject accountNotFind = accountBuilder.

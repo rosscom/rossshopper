@@ -127,11 +127,11 @@ public class AccountResourceIT {
     
         
         // delete
-//        Response deleteResponse = this.provider.target().
-//               path("admin").
-//               request(MediaType.APPLICATION_JSON).delete();
-//        assertThat(deleteResponse.getStatus(), is(204));
-//        System.out.println("check delete                    : ok");
+        Response deleteResponse = this.provider.target().
+               path("admin").
+               request(MediaType.APPLICATION_JSON).delete();
+        assertThat(deleteResponse.getStatus(), is(204));
+        System.out.println("check delete                    : ok");
 
         // listAll again after delete
         response = provider.target().

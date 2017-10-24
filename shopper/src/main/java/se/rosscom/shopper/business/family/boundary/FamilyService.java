@@ -50,7 +50,8 @@ public class FamilyService {
     
     public List<Family> findByUser(Account account) {
         TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
-        typedQuery.setParameter("userId", account.getUserId());
+//        typedQuery.setParameter("userId", account.getUserId());
+        typedQuery.setParameter("userId", account);
         List<Family> results = typedQuery.getResultList();
         	
         return results;
