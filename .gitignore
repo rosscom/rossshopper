@@ -2,3 +2,9 @@
 /shared/target/
 /shopper-client/target/
 /test/target/
+/rossshopper.iml
+/shared/shared.iml
+/shopper/shopper.iml
+/shopper-client/shopper-client.iml
+/shopper-st/shopper-st.iml
+/.idea/
