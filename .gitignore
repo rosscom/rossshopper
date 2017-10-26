@@ -17,3 +17,4 @@
 /shopper/src/main/java/se/rosscom/shopper/business/DatasourceSelector.java
 /shopper/src/main/resources/META-INF/persistence.xml.txt
 /shopper-uix/target/
+/shopper-uix/shopper-uix.iml
