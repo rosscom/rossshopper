@@ -33,7 +33,7 @@ public class AuthenticationResource {
         try {
             String decoded = getDecodedAuthorizationHeaderFromRequest(context);
 
-            Account account = accountService.findByUserName(stringHelper.getStringBeforeSeparator(decoded, ":"));
+            Account account = accountService.findByUser(stringHelper.getStringBeforeSeparator(decoded, ":"));
 
             authenticate(account, stringHelper.getStringAfterSeparator(decoded, ":"));
 
