@@ -8,14 +8,12 @@ package se.rosscom.shopper.business.account.boundary;
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
@@ -52,7 +50,6 @@ public class AccountResourceIT {
         String location = postResponse.getHeaderString("Location");
         System.out.println("Create an account               : ok "+ accountToCreate.toString());
         System.out.println("admin location                  : " +location);
-        
        
         // Find
         JsonObject adminAccount = this.provider.client().
@@ -104,8 +101,7 @@ public class AccountResourceIT {
                 add("password", "nilsudden").
                 add("loggedIn", true).
                 build();
-
-        
+       
         this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
@@ -127,11 +123,11 @@ public class AccountResourceIT {
     
         
         // delete
-        Response deleteResponse = this.provider.target().
-               path("admin").
-               request(MediaType.APPLICATION_JSON).delete();
-        assertThat(deleteResponse.getStatus(), is(204));
-        System.out.println("check delete                    : ok");
+//        Response deleteResponse = this.provider.target().
+//               path("admin").
+//               request(MediaType.APPLICATION_JSON).delete();
+//        assertThat(deleteResponse.getStatus(), is(204));
+//        System.out.println("check delete                    : ok");
 
         // listAll again after delete
 //        response = provider.target().
@@ -139,8 +135,8 @@ public class AccountResourceIT {
 //        allAccounts = response.readEntity(JsonArray.class);
 //        System.err.println("list allAccounts                : " + allAccounts);
     }
-        
- //   @Test
+         
+//    @Test
     public void testLogin() {
         
         // Find admin account
