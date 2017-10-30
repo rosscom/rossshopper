@@ -2,29 +2,63 @@
 <html lang="en">
 <head>
     <title>Ross-shopper-ui</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
-<h1>Admin GUI</h1>
+    <div class="container">
+        <h1>Admin GUI</h1>
+    </div>
 
-<style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-        padding: 2vh;
-        text-align: left;
-    }
-</style>
-<table>
-    <tr>
-        <th>DatabaseConnection</th>
-        <th>SystemTime</th>
-        <th>Environment</th>
-    </tr>
-    <tr id="rows">
-    </tr>
-</table>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
 
-<script src="app.js"></script>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>DatabaseConnection</th>
+                            <th>SystemTime</th>
+                            <th>Environment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="rows">
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+
+                <div class="form-group">
+                    <label for="userName">Username</label>
+                    <input class="form-control" id="userName" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="psw">Password</label>
+                    <input type="password" class="form-control" id="psw" placeholder="Password">
+                </div>
+                <button id=loginButton class="btn btn-primary">Login</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="auth.js"></script>
 
 </body>
 </html>

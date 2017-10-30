@@ -1,32 +1,50 @@
 class App {
 
     constructor() {
-        this.trRows = document.querySelector("#rows");
-        this.pingServer();
+        document.querySelector("#loginButton").onclick = this.loginRequest;
     }
 
-    pingServer() {
-        fetch('http://localhost:8080/shopper/api/ping')
-            .then(response => response.json())
-            .then(json => this.createTableRows(json))
+    pingServer(token) {
+        fetch('http://localhost:8080/shopper/api/ping', {headers: {'Authorization': token}})
+            .then(response => {
+                if (response.status == 200) {
+                    response.json().then(body => this.createTableRows(body));
+                } else {
+                    console.log("FORBIDDEN...");
+                }
+            })
             .catch(error => console.error(error));
     }
 
     createTableRows(jsonObj) {
-        console.log(jsonObj);
+        let trRows = document.querySelector("#rows");
+
         let dbTr = document.createElement("td");
         dbTr.innerText = jsonObj.databaseConnection;
-        this.trRows.appendChild(dbTr);
+        trRows.appendChild(dbTr);
 
         let timeTr = document.createElement("td");
         timeTr.innerText = jsonObj.systemTime;
-        this.trRows.appendChild(timeTr);
+        trRows.appendChild(timeTr);
 
         let envTr = document.createElement("td");
         envTr.innerText = jsonObj.environment;
-        this.trRows.appendChild(envTr);
+        trRows.appendChild(envTr);
     }
 
+    loginRequest() {
+        let auth = new Auth();
+
+        let username = document.querySelector("#userName").value;
+        let psw = document.querySelector("#psw").value;
+
+        let authEncodedString = 'Basic ' + auth.encode(username + ':' + psw);
+
+        fetch('http://localhost:8080/shopper/api/auth/login', {headers: {'Authorization': authEncodedString}})
+            .then(response => response.text())
+            .then(res => auth.setToken(res))
+            .catch(error => console.error(error));
+    }
 }
 
 let app = new App();

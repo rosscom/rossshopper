@@ -5,6 +5,8 @@
  */
 package se.rosscom.shopper.business.ping;
 
+import se.rosscom.shopper.business.authentication.boundary.Secured;
+
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -19,7 +21,8 @@ public class PingResource {
 
     @Inject
     private PingService pingService;
-    
+
+    @Secured
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject get(){
