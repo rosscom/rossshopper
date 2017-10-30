@@ -31,10 +31,11 @@ public class TokenService {
         return tokenEntity;
     }
 
-    public Token findByTokenAndUser(final String token, final String userName) {
-        List<Token> resultList = em.createQuery("SELECT a FROM Token a WHERE a.token = :token AND a.account.userName = :userName", Token.class)
+    public Token findByTokenAndUser(final String token, final String userId) {
+        List<Token> resultList = em.createQuery("SELECT a FROM Token a WHERE a.token = :token AND a.account.userId = :userId"
+                , Token.class)
                 .setParameter("token", token)
-                .setParameter("userName", userName)
+                .setParameter("userId", userId)
                 .getResultList();
         return resultList.isEmpty() ? null : resultList.get(0);
     }

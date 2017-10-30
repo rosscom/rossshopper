@@ -64,6 +64,6 @@ public class AuthenticationResource {
 
     private String generateToken(Account account) {
         Token token = tokenService.createToken(account);
-        return "Auth-shopper " + account.getUserName() +":" + token.getToken();
+        return "Auth-shopper " + account.getUserId() +":" + token.getToken();
     }
 }
