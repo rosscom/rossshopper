@@ -28,6 +28,7 @@ public class AccountResource {
     @Inject
     private AccountService accountService;
 
+    @Secured
     @POST
     public Response save(Account account, @Context UriInfo info) {
         if(account != null && account.isLoggedIn() == null) {

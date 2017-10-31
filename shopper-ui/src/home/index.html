@@ -11,41 +11,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="../home/index.html">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../account/account.html">Accounts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Families</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Lists</a>
+        </li>
+    </ul>
+
+
+    <div class="container" id="start">
         <h1>Admin GUI</h1>
     </div>
 
-    <div class="container">
+    <br>
+
+    <div class="container" id="logout">
         <div class="row">
-            <div class="col-10">
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>DatabaseConnection</th>
-                            <th>SystemTime</th>
-                            <th>Environment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="rows">
-                        </tr>
-                    </tbody>
-                </table>
-
+            <div class="col-6">
+                <h3><span class="badge badge-success">Logged-in</span></h3>
             </div>
         </div>
     </div>
-    <br>
-    <br>
 
-    <div class="container">
+    <div class="container" id="login">
         <div class="row">
             <div class="col-6">
 
                 <div class="form-group">
-                    <label for="userName">Username</label>
-                    <input class="form-control" id="userName" placeholder="Username">
+                    <label for="userid">Userid</label>
+                    <input class="form-control" id="userid" placeholder="Userid">
                 </div>
                 <div class="form-group">
                     <label for="psw">Password</label>
@@ -57,8 +59,7 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
-    <script src="auth.js"></script>
+    <script src="index.js"></script>
 
 </body>
 </html>

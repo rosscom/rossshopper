@@ -42,11 +42,12 @@ public class Account implements Serializable {
     private Boolean loggedIn;
     private String choosedHome;
 
-    public Account(String userId, String password, String choosedHome) {
+    public Account(String userId, String password, String choosedHome, String mail) {
         this.userId = userId;
         this.password = password;
         this.loggedIn = false;
         this.choosedHome = choosedHome;
+        this.mail = mail;
     }
 
     public Account() {
@@ -87,6 +88,7 @@ public class Account implements Serializable {
     public void setChoosedHome(String choosedHome) {
         this.choosedHome = choosedHome;
     }
+
     public String getMail() {
         return mail;
     }
