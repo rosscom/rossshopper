@@ -38,7 +38,6 @@ public class Account implements Serializable {
     private String userId;
     private String password;
     private String mail;
-    private String userName;
 
     private Boolean loggedIn;
     private String choosedHome;
@@ -94,14 +93,6 @@ public class Account implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
 }
