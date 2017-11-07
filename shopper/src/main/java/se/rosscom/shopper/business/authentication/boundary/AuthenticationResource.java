@@ -37,7 +37,7 @@ public class AuthenticationResource {
 
             authenticate(account, stringHelper.getStringAfterSeparator(decoded, ":"));
 
-            String token = generateToken(account);
+            String token = tokenService.generateToken(account);
 
             return Response.ok(token).build();
 
@@ -60,10 +60,5 @@ public class AuthenticationResource {
             return;
         }
         throw new Exception("Invalid user credentials");
-    }
-
-    private String generateToken(Account account) {
-        Token token = tokenService.createToken(account);
-        return "Auth-shopper " + account.getUserId() +":" + token.getToken();
     }
 }

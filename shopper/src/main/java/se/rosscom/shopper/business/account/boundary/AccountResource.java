@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.authentication.boundary.Secured;
+import se.rosscom.shopper.business.authentication.boundary.TokenService;
+import se.rosscom.shopper.business.authentication.entity.Token;
 
 /**
  *
@@ -27,18 +29,22 @@ public class AccountResource {
     
     @Inject
     private AccountService accountService;
+    
+    @Inject 
+    private TokenService tokenService;
 
     @POST
     public Response save(Account account, @Context UriInfo info) {
         if(account != null && account.isLoggedIn() == null) {
             account.setLoggedIn(Boolean.FALSE);
         }
-        Account savedAccount = accountService.save(account);   
-        String user = savedAccount.getUserId();
-        URI uri = info.getAbsolutePathBuilder().path("/"+user).build();
-        return Response.created(uri).build();
+        Account savedAccount = accountService.save(account);  
+        // Add authenticate create token
+        String token = tokenService.generateToken(savedAccount);
+        return Response.ok(token).build();
     }
 
+    @Secured
     @GET
     @Path("{user}")
     public Response find(@PathParam("user") String user) {
@@ -58,7 +64,8 @@ public class AccountResource {
     public List<Account> all() {
         return accountService.all();
     }
-
+    
+    @Secured
     @PUT
     @Path("{user}")
     public Account update(@PathParam("user") String userId, Account account) {
@@ -84,7 +91,7 @@ public class AccountResource {
 //        }
     }
 
-
+    @Secured
     @DELETE
     @Path("{user}")
     public void delete(@PathParam("user") String userId) {

@@ -18,6 +18,11 @@ public class TokenService {
     @PersistenceContext
     private EntityManager em;
 
+    public String generateToken(Account account) {
+        Token token = this.createToken(account);
+        return "Auth-shopper " + account.getUserId() +":" + token.getToken();
+    }
+
     public Token createToken(final Account account) {
         Random random = new SecureRandom();
         String token = new BigInteger(130, random).toString(32);

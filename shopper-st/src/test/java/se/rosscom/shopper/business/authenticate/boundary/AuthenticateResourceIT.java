@@ -19,7 +19,7 @@ public class AuthenticateResourceIT {
     
     @Test
     public void login() {
-        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("1:1234").getBytes());
+        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("shoppertest:timon").getBytes());
         String token = this.provider.target()
                 .request()
                 .header("Authorization", basicAuthString)
