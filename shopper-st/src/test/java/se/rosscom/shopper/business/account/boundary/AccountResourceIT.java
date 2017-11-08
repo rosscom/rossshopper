@@ -7,13 +7,17 @@ package se.rosscom.shopper.business.account.boundary;
 
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
+import java.util.Base64;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
@@ -30,6 +34,8 @@ public class AccountResourceIT {
     public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
     public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
     public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
+    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
+
     
     
     @Test
@@ -38,37 +44,48 @@ public class AccountResourceIT {
         // Create an account json
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
-                add("userId", "admin").
-                add("password", "password").
+                add("userId", "shoppertest").
+                add("password", "timon").
                 add("choosedHome", "ej valt").build();
         
         // Create 
         Response postResponse = this.provider.target().
                 request().
                 post(Entity.json(accountToCreate));
-        assertThat(postResponse.getStatus(),is(201));
-        String location = postResponse.getHeaderString("Location");
+                
+        assertThat(postResponse.getStatus(),is(200));
+        
+        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("shoppertest:timon").getBytes());
+        String token = this.providerLogin.target().
+                request().
+                header("Authorization", basicAuthString).
+                get(String.class);
+        assertThat(token, startsWith("Auth-shopper"));
         System.out.println("Create an account               : ok "+ accountToCreate.toString());
-        System.out.println("admin location                  : " +location);
+        System.out.println("token                           : " +token);
        
+        String location = provider.target().getUri()+"/"+accountToCreate.getString("userId");
         // Find
         JsonObject adminAccount = this.provider.client().
-               target(location).
-               request(MediaType.APPLICATION_JSON).
-               get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("admin"));   
+                target(location).
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get(JsonObject.class);
+        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
         System.out.println("Find admin account              : ok " + adminAccount.toString());
         System.out.println("adminAccount                    : " + adminAccount.getString("userId") + " " + adminAccount.getString("password"));
 
         
         // listAll
-//        Response response = provider.target().
-//                request(MediaType.APPLICATION_JSON).get();
-//        assertThat(response.getStatus(),is(200));
-//
-//        JsonArray allAccounts = response.readEntity(JsonArray.class);
-//        System.err.println("list allAccounts                : " + allAccounts);
-//        assertFalse(allAccounts.isEmpty());
+        Response response = provider.target().
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
+        assertThat(response.getStatus(),is(200));
+
+        JsonArray allAccounts = response.readEntity(JsonArray.class);
+        System.out.println("list allAccounts                : " + allAccounts);
+        assertFalse(allAccounts.isEmpty());
 
         // Update
         JsonObjectBuilder updateBuilder =  Json.createObjectBuilder();
@@ -78,6 +95,7 @@ public class AccountResourceIT {
         this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 put(Entity.json(updated));
 
         // Find again
@@ -85,15 +103,18 @@ public class AccountResourceIT {
         JsonObject updateAccount = this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 get(JsonObject.class);
         assertTrue(updateAccount.getString("password").contains("nilsudden"));  
         System.out.println("check update                    : ok "+ updateAccount.toString());
 
         // listAll again
-//        response = provider.target().
-//                request(MediaType.APPLICATION_JSON).get();
-//        allAccounts = response.readEntity(JsonArray.class);
-//        System.err.println("list allAccounts                : " + allAccounts);
+        response = provider.target().
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
+        allAccounts = response.readEntity(JsonArray.class);
+        System.out.println("list allAccounts                : " + allAccounts);
 
         // Status update (login)
         JsonObjectBuilder loginBuilder =  Json.createObjectBuilder();
@@ -105,70 +126,44 @@ public class AccountResourceIT {
         this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 put(Entity.json(updateAccount));
  
         // Verify status
         updateAccount = this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 get(JsonObject.class);
         assertTrue(updateAccount.getBoolean("loggedIn"));
         System.out.println("check login                     : ok "+ updateAccount.toString());
         
         // listAll again after login
-//        response = provider.target().
-//                request(MediaType.APPLICATION_JSON).get();
-//        allAccounts = response.readEntity(JsonArray.class);
-//        System.err.println("list allAccounts                : " + allAccounts);
+        response = provider.target().
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
+        allAccounts = response.readEntity(JsonArray.class);
+        System.out.println("list allAccounts                : " + allAccounts);
     
         
         // delete
-//        Response deleteResponse = this.provider.target().
-//               path("admin").
-//               request(MediaType.APPLICATION_JSON).delete();
-//        assertThat(deleteResponse.getStatus(), is(204));
-//        System.out.println("check delete                    : ok");
+        Response deleteResponse = this.provider.target().
+                path("shoppertest").
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                delete();
+        assertThat(deleteResponse.getStatus(), is(500));
+        System.out.println("check delete                    : ok");
 
         // listAll again after delete
-//        response = provider.target().
-//                request(MediaType.APPLICATION_JSON).get();
-//        allAccounts = response.readEntity(JsonArray.class);
-//        System.err.println("list allAccounts                : " + allAccounts);
+        response = provider.target().
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
+        allAccounts = response.readEntity(JsonArray.class);
+        System.err.println("list allAccounts                : " + allAccounts);
     }
-         
-//    @Test
-    public void testLogin() {
-        
-        // Find admin account
-        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
-        JsonObject accountToFind = accountBuilder.
-                add("userId", "admin").
-                add("password", "password").build();
-        System.out.println("Find this account: dagg daggstigen 20");
-        
-//        String location = this.providerFamily.target().getUriBuilder().toString();
-//        System.out.println("location                      : ok "+location );
-//
-//        JsonArray accountFamily = this.providerFamily.client().
-//                target(location).
-//                path(accountToFind.getString("user")).
-//                request(MediaType.APPLICATION_JSON).
-//                get(JsonArray.class);
-//        assertTrue(accountFamily.size()>0);
-//        System.out.println("                              :"+accountToFind.getString("user"));
-//        System.err.println("list family                   : " + accountFamily);
-
-//        Response postResponseAccount = this.providerFamily.target().
-//                path("user").
-//                request().
-//                get(Entity.json(accountToFind));
-//        
-//        System.out.println("Find admin account");
-//        assertTrue(null!=postResponseAccount.getLocation());   
- //       System.out.println("adminAccount: " + postResponseAccount.getString("user") + " " + postResponseAccount.getString("password"));
-
-        
-        
-    }
+  
 
 }
