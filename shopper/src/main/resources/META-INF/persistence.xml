@@ -8,7 +8,7 @@
         </properties>
     </persistence-unit> -->
     
-    <persistence-unit name="test" transaction-type="JTA">
+    <!--<persistence-unit name="test" transaction-type="JTA">
         <jta-data-source>jdbc/shopper</jta-data-source>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
@@ -18,8 +18,8 @@
             <property name="javax.persistence.jdbc.password" value="vik012"/>
             <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
         </properties>
-    </persistence-unit> 
-<!--     <persistence-unit name="ubuntu" transaction-type="JTA">
+    </persistence-unit>-->
+    <persistence-unit name="ubuntu" transaction-type="JTA">
         <jta-data-source>jdbc/shopper</jta-data-source>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://78.70.236.13:5432/shopperdb"/>
@@ -28,6 +28,6 @@
             <property name="javax.persistence.jdbc.password" value="vik012vik"/>
             <property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
         </properties>
-    </persistence-unit> -->
+    </persistence-unit>
 </persistence>
  
