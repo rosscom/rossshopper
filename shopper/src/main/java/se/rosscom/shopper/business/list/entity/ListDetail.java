@@ -9,31 +9,37 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import se.rosscom.shopper.business.family.entity.Family;
 
 /**
  *
  * @author ulfrossang
  */
-@Entity
-@NamedQuery(name = ListDetail.findAll, query = " SELECT t from ListDetail t")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
+@Entity (name = "list_detail")
+@NamedQueries({
+//    @NamedQuery(name = ListDetail.findAll, 
+//                query = " SELECT t from ListDetail t"),
+//    @NamedQuery(name = ListDetail.findByFamily,
+//                query="SELECT c FROM ListDetail c WHERE c.family = :familyId"),
+}) 
+
+//@NamedQuery(name = ListDetail.findAll, query = " SELECT t from ListDetail t")
 public class ListDetail implements Serializable {
 
     static final String PREFIX = "listdetail.entity.ListDetail.";
     public static final String findAll = PREFIX + "findALl";
+    public static final String findByFamily = PREFIX + "findByFamily";
+
     
     @Id
-    @GeneratedValue
-    private long id;
+    private Integer id;
         
-    @ManyToOne
+    @ManyToOne  
+    @JoinColumn(name="id", insertable = false, updatable = false, nullable=false)
     private Family family;
 
     private String item;
@@ -50,7 +56,7 @@ public class ListDetail implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

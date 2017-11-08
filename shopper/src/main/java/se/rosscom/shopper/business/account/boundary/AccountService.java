@@ -19,14 +19,33 @@ import se.rosscom.shopper.business.account.entity.Account;
 public class AccountService {
   
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
+
 
     public Account save(Account account){
-        return this.em.merge(account);
+        Account savedAcccount = this.em.merge(account);
+        return savedAcccount;
     }
     
     public Account findByUser(String userId) {
-       return this.em.find((Account.class), userId); 
+       Account account = this.em.find((Account.class), userId); 
+       if (account == null) {
+           return null;
+       }
+       return account;
+    }
+
+
+    public List<Account> findByLoggedIn(String loggedIn) {
+   //     TypedQuery<Account> typedQuery = this.em.createNamedQuery(Account.findByLoggedIn, Account.class).getResultList();
+        
+        return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
+    }
+    public Account findByUserName(final String userName) {
+        List<Account> resultList = em.createQuery("select a from Account a where a.userName = :userName", Account.class)
+                .setParameter("userName", userName)
+                .getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
     }
 
     public List<Account> all() {

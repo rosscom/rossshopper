@@ -62,6 +62,8 @@ public class FamilyResourceIT {
         String locationAccount = postResponseAccount.getHeaderString("Location");
         System.out.println("Create an account             : ok "+ accountToCreate.toString());
 
+        
+        // Find admin account
         JsonObject adminAccount = this.provider.client().
                target(locationAccount).
                request(MediaType.APPLICATION_JSON).
@@ -102,16 +104,34 @@ public class FamilyResourceIT {
                 add("password", "password").build();
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
-
-        JsonArray accountFamily = this.providerFamily.client().
-                target(location).
-                path(accountToFind.getString("userId")).
-                request(MediaType.APPLICATION_JSON).
-                get(JsonArray.class);
-        assertTrue(accountFamily.size()>0);
-        System.out.println("                              :"+accountToFind.getString("userId"));
-        System.err.println("list family                   : " + accountFamily);
+        // TODO 
+//        JsonArray accountFamily = this.providerFamily.client().
+//                target(location).
+//                path(accountToFind.getString("userId")).
+//                request(MediaType.APPLICATION_JSON).
+//                get(JsonArray.class);
+//        assertTrue(accountFamily.size()>0);
+//        System.out.println("                              :"+accountToFind.getString("userId"));
+//        System.err.println("list family                   : " + accountFamily);
        
+
+        // Find other account
+        accountBuilder =  Json.createObjectBuilder();
+        JsonObject accountNotFind = accountBuilder.
+                add("userId", "other").
+                add("password", "password").build();
+        location = this.providerFamily.target().getUriBuilder().toString();
+        System.out.println("location                      : ok "+location );
+
+        response = this.providerFamily.client().
+                target(location).
+                path(accountNotFind.getString("userId")).
+                request(MediaType.APPLICATION_JSON).
+                get();
+        assertThat(response.getStatus(), is(404));
+        assertFalse(response.getHeaderString("reason").isEmpty());
+        System.out.println("findOther missed              : ok "+response.getStatus() + " " + response.getHeaderString("reason") );
+        
 
         // delete todo
 //        System.out.println("check delete");

@@ -18,15 +18,16 @@ import org.junit.Test;
  *
  * @author ulfrossang
  */
-public class DaggIT {
+public class PingIT {
     
     private Client client;
     private WebTarget tut;
+    private WebTarget tutListItem;
     
     @Before
     public void initClient() {
         this.client = ClientBuilder.newClient();
-        this.tut = this.client.target("http://localhost:8080/shopper/api/dagg");
+        this.tut = this.client.target("http://localhost:8080/shopper/api/ping");
        
        
         
@@ -38,6 +39,7 @@ public class DaggIT {
         assertThat(response.getStatus(), is(200));
         String result = response.readEntity(String.class);
         System.err.println("Result: " + result);
+
         
     }
     

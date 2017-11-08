@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ross-shopper-ui</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body>
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="../home/index.html">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="../account/account.html">Accounts</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Families</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Lists</a>
+        </li>
+    </ul>
+
+
+    <div class="container" id="start">
+        <h1>Admin GUI</h1>
+    </div>
+
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <table class="table" id="accountTable">
+                    <thead >
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Mail</th>
+                        <th scope="col">Home</th>
+                    </tr>
+                    </thead>
+                    <tbody id="accounts">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createUserModal">Create user</button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createUserModalLabel">Create user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="userId">Userid</label>
+                                <input class="form-control" id="userId" placeholder="Userid">
+                            </div>
+                            <div class="form-group">
+                                <label for="psw">Password</label>
+                                <input type="password" class="form-control" id="psw" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="r-psw">Repeat password</label>
+                                <input type="password" class="form-control" id="r-psw" placeholder="Repeat password">
+                            </div>
+                            <div class="form-group">
+                                <label for="home">Choosed home</label>
+                                <input class="form-control" id="home" placeholder="Choosed home">
+                            </div>
+                            <div class="form-group">
+                                <label for="mail">Mail</label>
+                                <input class="form-control" id="mail" placeholder="Mail address">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button id="createUser" type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <script src="account.js"></script>
+
+</body>
+</html>

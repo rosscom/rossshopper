@@ -8,6 +8,7 @@ package se.rosscom.shopper.business.account.entity;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,14 +20,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  * ulf@rosscom.org vik012
  */
 @Entity
-@NamedQuery(name = Account.findAll, query = " SELECT t from Account t")
+@NamedQueries({
+    @NamedQuery(name = Account.findAll, 
+                query = " SELECT t from Account t"),
+    @NamedQuery(name = Account.findByLoggedIn,
+                query="SELECT c FROM Account c WHERE c.loggedIn = :loggedIn"),
+}) 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class Account implements Serializable {
             
     static final String PREFIX = "account.entity.Account.";
     public static final String findAll = PREFIX + "findALl";
-    
+    public static final String findByLoggedIn = PREFIX + "findByLoggedIn";
+
     @Id
     private String userId;
     private String password;
@@ -35,11 +42,12 @@ public class Account implements Serializable {
     private Boolean loggedIn;
     private String choosedHome;
 
-    public Account(String userId, String password) {
+    public Account(String userId, String password, String choosedHome, String mail) {
         this.userId = userId;
         this.password = password;
         this.loggedIn = false;
-        this.choosedHome = null;
+        this.choosedHome = choosedHome;
+        this.mail = mail;
     }
 
     public Account() {
@@ -80,6 +88,7 @@ public class Account implements Serializable {
     public void setChoosedHome(String choosedHome) {
         this.choosedHome = choosedHome;
     }
+
     public String getMail() {
         return mail;
     }

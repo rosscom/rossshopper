@@ -5,8 +5,8 @@
  */
 package se.rosscom.shopper.business.family.boundary;
 
-import se.rosscom.shopper.business.home.boundary.*;
 import java.net.URI;
+import se.rosscom.shopper.business.home.boundary.*;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -46,12 +46,24 @@ public class FamilyResource {
         URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUserId()).build();
         return Response.created(uri).build();
     }
-
     @GET
     @Path("{userId}")
-    public List<Family> findByUser(@PathParam("userId") String userId) {
-        Account acount = accountService.findByUser(userId);
-        return familyService.findByUser(acount);
+    public Response findByUser(@PathParam("userId") String userId) {
+        Account account = accountService.findByUser(userId);
+        if (account == null) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "user: " + userId + " dont exist").
+                    build();
+        } else {
+            List<Family> famList = familyService.findByUser(account);
+            if (famList == null || (famList.isEmpty())) {
+                return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "user: " + userId + " dont exist").
+                    build();
+            } else {
+                return Response.ok(famList).build();
+            }
+        }
     }
 
     @GET

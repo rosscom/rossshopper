@@ -4,17 +4,14 @@ import com.airhacks.afterburner.injection.Injector;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.opendolphin.core.client.ClientDolphin;
 
 /**
  * ShopperApp Application. This class handles navigation and user session.
  */
 public class ShopperApp extends Application {
     
-    public static ClientDolphin clientDolphin;
     private Stage stage;
-    private final double MINIMUM_WINDOW_WIDTH = 300.0;
-    private final double MINIMUM_WINDOW_HEIGHT = 500.0;
+    private Scene sceneLogin;
     
     /**
      * @param args the command line arguments
@@ -24,19 +21,21 @@ public class ShopperApp extends Application {
     }
     
     @Override
-    public void start(Stage stage) throws Exception {
-
+    public void start(Stage primaryStage) throws Exception {
+        
+        stage = primaryStage;
         LoginView appView = new LoginView();
-        Scene scene = new Scene(appView.getView());
+        sceneLogin = new Scene(appView.getView());
+
         stage.setTitle("Ross shopper");
-        final String uri = getClass().getResource("shopperApp.css").toExternalForm();
-        scene.getStylesheets().add(uri);
-        stage.setScene(scene);
+        final String uri = getClass().getResource("shopper.css").toExternalForm();
+        sceneLogin.getStylesheets().add(uri);
+        stage.setScene(sceneLogin);
         stage.show();
+
     }
     @Override
     public void stop() throws Exception {
         Injector.forgetAll();
     }
-
 }

@@ -47,8 +47,9 @@
     <modules>
         <module>shopper</module>
         <module>shopper-st</module>
-        <module>shared</module>
         <module>shopper-client</module>
+        <module>shopper-ui</module>
+        <module>shopper-uix</module>
   </modules>    
 
     <properties>
