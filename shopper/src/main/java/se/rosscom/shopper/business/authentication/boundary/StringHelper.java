@@ -3,6 +3,7 @@ package se.rosscom.shopper.business.authentication.boundary;
 public class StringHelper {
 
     public String getStringAfterSeparator(String authString, String separator) {
+        String variableFromGitHub = "GitHub";
         return authString.substring(authString.lastIndexOf(separator) + 1);
     }
 
