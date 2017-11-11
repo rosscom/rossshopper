@@ -12,7 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import se.rosscom.shopper.business.UserAndTokenHelper;
 
-public class AuthenticateResourceIT {
+public class AuthenticateResourceIntegrationTest {
 
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/auth/login");

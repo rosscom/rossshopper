@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  * @author ulfrossang
  */
-public class AccountResourceIT {
+public class AccountResourceIntegrationTest {
 
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/account");
