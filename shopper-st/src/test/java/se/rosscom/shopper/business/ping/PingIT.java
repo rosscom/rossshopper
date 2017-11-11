@@ -36,8 +36,6 @@ public class PingIT {
         assertThat(response.getStatus(), is(200));
         String result = response.readEntity(String.class);
         System.err.println("Result: " + result);
-
-        
     }
     
 }
