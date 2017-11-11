@@ -6,6 +6,8 @@
 package se.rosscom.shopper.business.family.boundary;
 
 import java.net.URI;
+
+import se.rosscom.shopper.business.authentication.boundary.Secured;
 import se.rosscom.shopper.business.home.boundary.*;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -65,6 +67,7 @@ public class FamilyResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured
     public List<Family> all() {
         return familyService.all();
     }
