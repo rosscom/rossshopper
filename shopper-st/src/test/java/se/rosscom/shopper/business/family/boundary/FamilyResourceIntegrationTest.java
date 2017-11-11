@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package se.rosscom.shopper.business.list.boundary;
+package se.rosscom.shopper.business.family.boundary;
 
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
@@ -18,27 +13,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 import org.junit.Rule;
+import org.junit.Test;
 
 /**
  *
  * @author ulfrossang
  */
-public class ListResourceIT {
-    
+public class FamilyResourceIntegrationTest {
         
     @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/listdetail");
+    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/family");
     public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
     public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
     public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
-    
 
        
     @Test
     public void crud() {
-        
         
         // Create a home
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
@@ -52,7 +44,7 @@ public class ListResourceIT {
         System.out.println("Create a home                 : ok "+ homeToCreate.toString());
         
         // Find home with name
-        JsonObject daggHome = this.providerHome.client().
+        JsonObject daggHome = this.provider.client().
                target(locationHome).
                request(MediaType.APPLICATION_JSON).
                get(JsonObject.class);
@@ -70,7 +62,9 @@ public class ListResourceIT {
         String locationAccount = postResponseAccount.getHeaderString("Location");
         System.out.println("Create an account             : ok "+ accountToCreate.toString());
 
-        JsonObject adminAccount = this.providerAccount.client().
+        
+        // Find admin account
+        JsonObject adminAccount = this.provider.client().
                target(locationAccount).
                request(MediaType.APPLICATION_JSON).
                get(JsonObject.class);
@@ -84,7 +78,7 @@ public class ListResourceIT {
                 add("account", adminAccount).build();
        
  
-        Response postResponse = this.providerFamily.target().request().post(Entity.json(familyToCreate));
+        Response postResponse = this.provider.target().request().post(Entity.json(familyToCreate));
         assertThat(postResponse.getStatus(),is(201));
         String location = postResponse.getHeaderString("Location");
         System.out.println("Create an family              : ok "+ familyToCreate.toString());
@@ -94,24 +88,14 @@ public class ListResourceIT {
         System.out.println(familyToCreate.getJsonObject("home"));
         System.out.println(familyToCreate.getJsonObject("account"));
 
-        
-
         // listAll
-        Response response = providerFamily.target().
+        Response response = provider.target().
                 request(MediaType.APPLICATION_JSON).get();
         assertThat(response.getStatus(),is(200));
         
         JsonArray allFamilys = response.readEntity(JsonArray.class);
         System.err.println("list allFamilys               : " + allFamilys);
         assertFalse(allFamilys.isEmpty());
-
-        // Find with family new test 170515 error
-//        JsonObject familyDaggAdmin = this.provider.client().
-//               target(location).
-//               request(MediaType.APPLICATION_JSON).
-//               get(JsonObject.class);
-//        assertTrue(familyDaggAdmin.getString("home").contains("dagg"));        
-//        System.out.println("Find family with dagg admin    : ok " + familyDaggAdmin.toString());
 
         // Find admin account
         accountBuilder =  Json.createObjectBuilder();
@@ -120,31 +104,47 @@ public class ListResourceIT {
                 add("password", "password").build();
         location = this.providerFamily.target().getUriBuilder().toString();
         System.out.println("location                      : ok "+location );
+        // TODO 
+//        JsonArray accountFamily = this.providerFamily.client().
+//                target(location).
+//                path(accountToFind.getString("userId")).
+//                request(MediaType.APPLICATION_JSON).
+//                get(JsonArray.class);
+//        assertTrue(accountFamily.size()>0);
+//        System.out.println("                              :"+accountToFind.getString("userId"));
+//        System.err.println("list family                   : " + accountFamily);
+       
 
-        /* TODO
-        JsonArray accountFamily = this.providerFamily.client().
+        // Find other account
+        accountBuilder =  Json.createObjectBuilder();
+        JsonObject accountNotFind = accountBuilder.
+                add("userId", "other").
+                add("password", "password").build();
+        location = this.providerFamily.target().getUriBuilder().toString();
+        System.out.println("location                      : ok "+location );
+
+        response = this.providerFamily.client().
                 target(location).
-                path(accountToFind.getString("userId")).
+                path(accountNotFind.getString("userId")).
                 request(MediaType.APPLICATION_JSON).
-                get(JsonArray.class);
-        assertTrue(accountFamily.size()>0);
-        System.out.println("                              :"+accountToFind.getString("userId"));
-        System.err.println("list family                   : " + accountFamily);
+                get();
+        assertThat(response.getStatus(), is(404));
+        assertFalse(response.getHeaderString("reason").isEmpty());
+        System.out.println("findOther missed              : ok "+response.getStatus() + " " + response.getHeaderString("reason") );
         
 
-        // listAll
-        response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
-        assertThat(response.getStatus(),is(200));
-        
-        JsonArray allListDetail = response.readEntity(JsonArray.class);
-        System.err.println("allListDetail                 : ok " + allListDetail);
-
-        */
-//        assertFalse(allListDetail.isEmpty());
-        
-
+        // delete todo
+//        System.out.println("check delete");
+//        Response deleteResponse = this.provider.target().
+//               path("dagg").
+//               request(MediaType.APPLICATION_JSON).delete();
+//        assertThat(deleteResponse.getStatus(), is(204));
+//        
+//        // listAll again after delete
+//        response = provider.target().
+//                request(MediaType.APPLICATION_JSON).get();
+//        allFamilys = response.readEntity(JsonArray.class);
+//        System.err.println("allFamilys " + allFamilys);
     }
 
-    
 }
