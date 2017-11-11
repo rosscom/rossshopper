@@ -7,6 +7,7 @@ package se.rosscom.shopper.business.list.boundary;
 
 import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
 import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
+import java.util.Base64;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -15,6 +16,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -33,6 +35,7 @@ public class ListResourceIntegrationTest {
     public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
     public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
     public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
+    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
     
 
        
@@ -62,19 +65,32 @@ public class ListResourceIntegrationTest {
         // Create an account
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
-                add("userId", "admin").
-                add("password", "password").build();
+                add("userId", "shoppertest").
+                add("password", "timon").build();
 
         Response postResponseAccount = this.providerAccount.target().request().post(Entity.json(accountToCreate));
-        assertThat(postResponseAccount.getStatus(),is(201));
-        String locationAccount = postResponseAccount.getHeaderString("Location");
+        assertThat(postResponseAccount.getStatus(),is(200));
         System.out.println("Create an account             : ok "+ accountToCreate.toString());
 
+        
+        
+        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("shoppertest:timon").getBytes());
+        String token = this.providerLogin.target().
+                request().
+                header("Authorization", basicAuthString).
+                get(String.class);
+        assertThat(token, startsWith("Auth-shopper"));
+        
+        System.out.println("Create an account               : ok "+ accountToCreate.toString());
+        System.out.println("token                           : " +token);
+        String location = providerAccount.target().getUri()+"/"+accountToCreate.getString("userId");
+
         JsonObject adminAccount = this.providerAccount.client().
-               target(locationAccount).
+               target(location).
                request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).                
                get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("admin"));   
+        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
         System.out.println("Find admin account            : ok " + adminAccount.toString());
         
         // Create a family
@@ -86,7 +102,7 @@ public class ListResourceIntegrationTest {
  
         Response postResponse = this.providerFamily.target().request().post(Entity.json(familyToCreate));
         assertThat(postResponse.getStatus(),is(201));
-        String location = postResponse.getHeaderString("Location");
+        location = postResponse.getHeaderString("Location");
         System.out.println("Create an family              : ok "+ familyToCreate.toString());
         System.out.println("location                      : ok "+location );
 
@@ -98,11 +114,13 @@ public class ListResourceIntegrationTest {
 
         // listAll
         Response response = providerFamily.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         assertThat(response.getStatus(),is(200));
         
         JsonArray allFamilys = response.readEntity(JsonArray.class);
-        System.err.println("list allFamilys               : " + allFamilys);
+        System.out.println("list allFamilys               : " + allFamilys);
         assertFalse(allFamilys.isEmpty());
 
         // Find with family new test 170515 error
