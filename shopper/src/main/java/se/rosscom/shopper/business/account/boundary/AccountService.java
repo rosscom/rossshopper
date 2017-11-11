@@ -70,6 +70,7 @@ public class AccountService {
     public void delete(String user) {
         Account reference = this.em.getReference(Account.class, user);
         this.em.remove(reference);
+        this.em.clear();
     }
 
     

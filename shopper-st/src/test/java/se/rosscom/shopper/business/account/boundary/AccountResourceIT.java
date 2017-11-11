@@ -153,7 +153,7 @@ public class AccountResourceIT {
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 delete();
-        assertThat(deleteResponse.getStatus(), is(500));
+        assertThat(deleteResponse.getStatus(), is(204));
         System.out.println("check delete                    : ok");
 
         // listAll again after delete

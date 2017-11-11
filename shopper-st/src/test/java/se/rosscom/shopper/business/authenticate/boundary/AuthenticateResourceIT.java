@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Rule;
 import org.junit.Test;
+import se.rosscom.shopper.business.UserAndTokenHelper;
 
 public class AuthenticateResourceIT {
 
@@ -19,7 +20,7 @@ public class AuthenticateResourceIT {
     
     @Test
     public void login() {
-        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("shoppertest:timon").getBytes());
+        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString((UserAndTokenHelper.generateUserCredentialsThroughRequest()).getBytes());
         String token = this.provider.target()
                 .request()
                 .header("Authorization", basicAuthString)
