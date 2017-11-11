@@ -7,7 +7,6 @@ package se.rosscom.shopper.business.list.entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,16 +20,16 @@ import se.rosscom.shopper.business.family.entity.Family;
  */
 @Entity (name = "list_detail")
 @NamedQueries({
-//    @NamedQuery(name = ListDetail.findAll, 
-//                query = " SELECT t from ListDetail t"),
-//    @NamedQuery(name = ListDetail.findByFamily,
-//                query="SELECT c FROM ListDetail c WHERE c.family = :familyId"),
+    @NamedQuery(name = ListDetail.findAll, 
+                query = " SELECT t from list_detail t"),
+    @NamedQuery(name = ListDetail.findByFamily,
+                query="SELECT c FROM list_detail c WHERE c.family= :familyId"),
 }) 
 
 //@NamedQuery(name = ListDetail.findAll, query = " SELECT t from ListDetail t")
 public class ListDetail implements Serializable {
 
-    static final String PREFIX = "listdetail.entity.ListDetail.";
+    static final String PREFIX = "listdetail.entity.ListDetail";
     public static final String findAll = PREFIX + "findALl";
     public static final String findByFamily = PREFIX + "findByFamily";
 
