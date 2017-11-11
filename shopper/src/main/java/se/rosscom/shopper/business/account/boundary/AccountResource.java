@@ -5,7 +5,6 @@
  */
 package se.rosscom.shopper.business.account.boundary;
 
-import java.net.URI;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.authentication.boundary.Secured;
 import se.rosscom.shopper.business.authentication.boundary.TokenService;
-import se.rosscom.shopper.business.authentication.entity.Token;
 
 /**
  *
