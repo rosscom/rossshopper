@@ -6,6 +6,7 @@ public class StringHelper {
         
         
         String local = "local";
+        String variableFromGitHub = "GitHub";
         return authString.substring(authString.lastIndexOf(separator) + 1);
     }
 
