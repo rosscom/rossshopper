@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.authentication.boundary.Secured;
 import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.home.entity.Home;
 
@@ -43,6 +44,7 @@ public class HomeResource {
         return homeService.findByName(name);
     }
 
+    @Secured
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Home> all() {
