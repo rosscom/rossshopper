@@ -123,21 +123,21 @@ public class ListResourceIntegrationTest {
         System.out.println("list allFamilys               : " + allFamilys);
         assertFalse(allFamilys.isEmpty());
 
-        // Find with family new test 170515 error
-//        JsonObject familyDaggAdmin = this.provider.client().
+        // Find with family TODO
+//        JsonObject familyDaggShopper = this.provider.client().
 //               target(location).
 //               request(MediaType.APPLICATION_JSON).
 //               get(JsonObject.class);
-//        assertTrue(familyDaggAdmin.getString("home").contains("dagg"));        
-//        System.out.println("Find family with dagg admin    : ok " + familyDaggAdmin.toString());
-
-        // Find admin account
-        accountBuilder =  Json.createObjectBuilder();
-        JsonObject accountToFind = accountBuilder.
-                add("userId", "admin").
-                add("password", "password").build();
-        location = this.providerFamily.target().getUriBuilder().toString();
-        System.out.println("location                      : ok "+location );
+//        assertTrue(familyDaggShopper.getString("home").contains("dagg"));        
+//        System.out.println("Find family with dagg shopper    : ok " + familyDaggShopper.toString());
+//
+//        // Find admin account
+//        accountBuilder =  Json.createObjectBuilder();
+//        JsonObject accountToFind = accountBuilder.
+//                add("userId", "admin").
+//                add("password", "password").build();
+//        location = this.providerFamily.target().getUriBuilder().toString();
+//        System.out.println("location                      : ok "+location );
 
         /* TODO
         JsonArray accountFamily = this.providerFamily.client().

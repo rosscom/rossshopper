@@ -15,6 +15,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
+import se.rosscom.shopper.business.UserAndTokenHelper;
 
 /**
  *
@@ -28,10 +29,13 @@ public class FamilyResourceIntegrationTest {
     public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
     public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
 
-       
+    public String token = null;
+  
     @Test
     public void crud() {
         
+        token = UserAndTokenHelper.generateTokenThroughRequest("shoppertest", "timon");
+    
         // Create a home
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
         JsonObject homeToCreate = homeBuilder.
@@ -54,24 +58,27 @@ public class FamilyResourceIntegrationTest {
         // Create an account
         JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
         JsonObject accountToCreate = accountBuilder.
-                add("userId", "admin").
-                add("password", "password").build();
+                add("userId", "shoppertest").
+                add("password", "timon").build();
 
         Response postResponseAccount = this.providerAccount.target().request().post(Entity.json(accountToCreate));
-        assertThat(postResponseAccount.getStatus(),is(201));
+        assertThat(postResponseAccount.getStatus(),is(200));
         String locationAccount = postResponseAccount.getHeaderString("Location");
         System.out.println("Create an account             : ok "+ accountToCreate.toString());
 
+        locationAccount = providerAccount.target().getUri()+"/"+accountToCreate.getString("userId");
+
         
         // Find admin account
-        JsonObject adminAccount = this.provider.client().
+        JsonObject adminAccount = this.providerAccount.client().
                target(locationAccount).
                request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).
                get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("admin"));   
-        System.out.println("Find admin account            : ok " + adminAccount.toString());
+        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
+        System.out.println("Find shoppertest account            : ok " + adminAccount.toString());
         
-        // Create a family
+//      Create a family
         JsonObjectBuilder familyBuilder =  Json.createObjectBuilder();
         JsonObject familyToCreate = familyBuilder.
                 add("home", daggHome).
@@ -90,7 +97,9 @@ public class FamilyResourceIntegrationTest {
 
         // listAll
         Response response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         assertThat(response.getStatus(),is(200));
         
         JsonArray allFamilys = response.readEntity(JsonArray.class);

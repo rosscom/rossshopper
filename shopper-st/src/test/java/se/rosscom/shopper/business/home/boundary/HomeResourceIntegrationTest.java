@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
+import se.rosscom.shopper.business.UserAndTokenHelper;
 
 /**
  *
@@ -29,6 +30,8 @@ public class HomeResourceIntegrationTest {
         
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/home");
+
+    public String token = null;
 
        
     @Test
@@ -55,9 +58,13 @@ public class HomeResourceIntegrationTest {
         assertTrue(daggHome.getString("name").contains("dagg"));        
         System.out.println("Find dagg home                : ok " + daggHome.toString());
 
+        token = UserAndTokenHelper.generateTokenThroughRequest("shoppertest", "timon");
+        
         // listAll
         Response response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         assertThat(response.getStatus(),is(200));
         
         JsonArray allHomes = response.readEntity(JsonArray.class);
@@ -85,7 +92,9 @@ public class HomeResourceIntegrationTest {
 
         // listAll again
         response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         allHomes = response.readEntity(JsonArray.class);
         System.err.println("list allHomes                 : " + allHomes);
 
@@ -99,7 +108,9 @@ public class HomeResourceIntegrationTest {
         
         // listAll again after delete
         response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         allHomes = response.readEntity(JsonArray.class);
         System.err.println("list allHomes                 : " + allHomes);
     }

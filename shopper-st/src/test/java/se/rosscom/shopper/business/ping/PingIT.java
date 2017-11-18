@@ -32,7 +32,7 @@ public class PingIT {
     
     @Test
     public void smoke() {
-        Response response = this.webTarget.request().header("Authorization", UserAndTokenHelper.generateTokenThroughRequest()).get();
+        Response response = this.webTarget.request().header("Authorization", UserAndTokenHelper.generateTokenThroughRequest("user","1234")).get();
         assertThat(response.getStatus(), is(200));
         String result = response.readEntity(String.class);
         System.err.println("Result: " + result);
