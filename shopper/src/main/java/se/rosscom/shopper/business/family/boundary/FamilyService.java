@@ -9,10 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.authentication.entity.Token;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.home.entity.Home;
 
