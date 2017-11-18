@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 public class Token implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_generator")
-    @SequenceGenerator(name="token_generator", sequenceName = "token_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private String token;
