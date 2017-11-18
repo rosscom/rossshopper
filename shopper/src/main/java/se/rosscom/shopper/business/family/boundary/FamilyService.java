@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import se.rosscom.shopper.business.account.entity.Account;
+import se.rosscom.shopper.business.authentication.entity.Token;
 import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
 import se.rosscom.shopper.business.home.entity.Home;
@@ -26,10 +27,8 @@ public class FamilyService {
     EntityManager em;
     
     // family
-    public Family save(AccountHomepk family) {
-        Account acc = this.em.find((Account.class), family.getAccount().getUserId());
-        acc.setChoosedHome(family.getHome().getName());
-        return this.em.merge(new Family(family));
+    public Family save(Family family) {
+        return this.em.merge(family);
     }
 
     public Family findByHome(String home) {
@@ -49,12 +48,19 @@ public class FamilyService {
     }
     
     public List<Family> findByUser(Account account) {
-        TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
+        
+        List<Family> resultList = em.createQuery("SELECT f FROM Family f WHERE f.id.userId = :userId"
+                , Family.class)
+                .setParameter("userId", account.getUserId())
+                .getResultList();
+        return resultList.isEmpty() ? null : resultList;
+
+//        TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
 //        typedQuery.setParameter("userId", account.getUserId());
-        typedQuery.setParameter("userId", account);
-        List<Family> results = typedQuery.getResultList();
+//        typedQuery.setParameter("account", account);
+//        List<Family> results = typedQuery.getResultList();
         	
-        return results;
+     //   return results;
     }
     
     

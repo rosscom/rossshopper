@@ -5,8 +5,8 @@
  */
 package se.rosscom.shopper.business.family.boundary;
 
-import java.net.URI;
 
+import java.net.URI;
 import se.rosscom.shopper.business.authentication.boundary.Secured;
 import se.rosscom.shopper.business.home.boundary.*;
 import java.util.List;
@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
 
 /**
@@ -40,9 +39,9 @@ public class FamilyResource {
     AccountService accountService;
 
     @POST
-    public Response save(AccountHomepk accountHomepk, @Context UriInfo info) {
-        Family saveFamily = familyService.save(accountHomepk);  
-        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUserId()).build();
+    public Response save(Family family, @Context UriInfo info) {
+        Family saveFamily = familyService.save(family);  
+        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getFamilyId()).build();
         return Response.created(uri).build();
     }
     @GET

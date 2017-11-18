@@ -22,11 +22,10 @@ import se.rosscom.shopper.business.family.entity.Family;
 @NamedQueries({
     @NamedQuery(name = ListDetail.findAll, 
                 query = " SELECT t from list_detail t"),
-    @NamedQuery(name = ListDetail.findByFamily,
-                query="SELECT c FROM list_detail c WHERE c.family= :familyId"),
+//    @NamedQuery(name = ListDetail.findByFamily,
+//                query="SELECT c FROM list_detail c WHERE c.family= :familyId"),
 }) 
 
-//@NamedQuery(name = ListDetail.findAll, query = " SELECT t from ListDetail t")
 public class ListDetail implements Serializable {
 
     static final String PREFIX = "listdetail.entity.ListDetail";
@@ -38,7 +37,7 @@ public class ListDetail implements Serializable {
     private Integer id;
         
     @ManyToOne  
-    @JoinColumn(name="id", insertable = false, updatable = false, nullable=false)
+    @JoinColumn(name="familyId", insertable = false, updatable = false, nullable=false)
     private Family family;
 
     private String item;
