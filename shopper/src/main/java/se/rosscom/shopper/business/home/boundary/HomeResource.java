@@ -30,6 +30,7 @@ public class HomeResource {
     @Inject
     HomeService homeService;
 
+    @Secured
     @POST
     public Response save(Home home, @Context UriInfo info) {
         Home saveHome = homeService.save(home);
@@ -38,8 +39,10 @@ public class HomeResource {
         return Response.created(uri).build();
     }
 
+    @Secured
     @GET
     @Path("{name}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Home find(@PathParam("name") String name) {
         return homeService.findByName(name);
     }
