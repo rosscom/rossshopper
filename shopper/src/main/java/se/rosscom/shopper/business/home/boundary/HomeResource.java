@@ -54,22 +54,15 @@ public class HomeResource {
         return homeService.all();
     }
 
+    @Secured
     @PUT
     @Path("{name}")
     public Home update(@PathParam("name") String name, Home home) {
         home.setName(name);
         return homeService.save(home);
     }
-    
-//    @POST
-//    public Response save() {
-//        Family family = homeService.save(home, account);
-//        URI uri = info.getAbsolutePathBuilder().path("/"+family.getUserId()).build();
-//        return Response.created(uri).build();
-//        return Response.ok().build();
-//    }
-    
 
+    @Secured
     @DELETE
     @Path("{name}")
     public void delete(@PathParam("name") String name) {
