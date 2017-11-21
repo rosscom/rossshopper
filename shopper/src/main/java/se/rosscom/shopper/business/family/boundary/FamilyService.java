@@ -28,41 +28,29 @@ public class FamilyService {
         return this.em.merge(family);
     }
 
-    public Family findByHome(String home) {
-       return this.em.find((Family.class), home); 
-    }
-
-    public Family findById(String id) {
-       return this.em.find((Family.class), id); 
+    public Family findByHome(Long homeId) {
+       return this.em.find((Family.class), homeId);
     }
     
     public List<Family> all() {
         return this.em.createNamedQuery(Family.findAll,Family.class).getResultList();
     }
     
-    public Home findByName(String name) {
-       return this.em.find((Home.class), name); 
+    public Family findByFamilyId(Long familyId) {
+       return this.em.find((Family.class), familyId);
     }
     
     public List<Family> findByUser(Account account) {
-        
         List<Family> resultList = em.createQuery("SELECT f FROM Family f WHERE f.id.userId = :userId"
                 , Family.class)
                 .setParameter("userId", account.getUserId())
                 .getResultList();
         return resultList.isEmpty() ? null : resultList;
-
-//        TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
-//        typedQuery.setParameter("userId", account.getUserId());
-//        typedQuery.setParameter("account", account);
-//        List<Family> results = typedQuery.getResultList();
-        	
-     //   return results;
     }
     
     
-    public void delete(String home) {
-        Family reference = this.findByHome(home);
+    public void delete(Long familyId) {
+        Family reference = this.findByHome(familyId);
         this.em.remove(reference);
     }
 }

@@ -20,6 +20,7 @@ import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.home.entity.Home;
 
 /**
  *
@@ -30,20 +31,35 @@ import se.rosscom.shopper.business.family.entity.Family;
 public class FamilyResource {
     
     @Inject
-    FamilyService familyService;
+    private FamilyService familyService;
 
     @Inject
-    HomeService homeService;
+    private AccountService accountService;
 
-    @Inject
-    AccountService accountService;
-
+    @Secured
     @POST
     public Response save(Family family, @Context UriInfo info) {
         Family saveFamily = familyService.save(family);  
         URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getFamilyId()).build();
         return Response.created(uri).build();
     }
+
+    @Secured
+    @GET
+    @Path("{family}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("family") Long familyId) {
+        Family family = familyService.findByFamilyId(familyId);
+        if (family == null) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "family: " + familyId + " dont exist").
+                    build();
+        } else {
+            return Response.ok(family).build();
+        }
+    }
+
+    @Secured
     @GET
     @Path("{userId}")
     public Response findByUser(@PathParam("userId") String userId) {
@@ -64,19 +80,19 @@ public class FamilyResource {
         }
     }
 
+    @Secured
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured
     public List<Family> all() {
         return familyService.all();
     }
 
 
+    @Secured
     @DELETE
-    @Path("{home}")
-    public void delete(@PathParam("home") String name) {
-        familyService.delete(name);
-        
+    @Path("{familyId}")
+    public void delete(@PathParam("familyId") Long familyId) {
+        familyService.delete(familyId);
     }
 
 }

@@ -30,13 +30,12 @@ public class HomeResourceIntegrationTest {
         
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/home");
-
-    public String token = null;
-
        
     @Test
     public void crud() {
-        
+
+        String token = UserAndTokenHelper.generateTokenThroughRequest("user", "psw");
+
         // Create a home
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
         JsonObject homeToCreate = homeBuilder.
@@ -44,31 +43,25 @@ public class HomeResourceIntegrationTest {
                 add("adress", "daggstigen 20").build();
         
         // Create 
-        Response postResponse = this.provider.target().request().post(Entity.json(homeToCreate));
+        Response postResponse = this.provider.target().request().header("Authorization", token).post(Entity.json(homeToCreate));
         assertThat(postResponse.getStatus(),is(201));
         String location = postResponse.getHeaderString("Location");
-        System.out.println("Create a home                 : ok "+ homeToCreate.toString());
-        System.out.println("dagg location                 : " +location);
                 
         // Find with name
         JsonObject daggHome = this.provider.client().
                target(location).
                request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).
                get(JsonObject.class);
-        assertTrue(daggHome.getString("name").contains("dagg"));        
-        System.out.println("Find dagg home                : ok " + daggHome.toString());
+        assertTrue(daggHome.getString("name").contains("dagg"));
 
-        token = UserAndTokenHelper.generateTokenThroughRequest("shoppertest", "timon");
-        
         // listAll
         Response response = provider.target().
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 get();
         assertThat(response.getStatus(),is(200));
-        
         JsonArray allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
         assertFalse(allHomes.isEmpty());
         
         // Update
@@ -79,16 +72,17 @@ public class HomeResourceIntegrationTest {
         this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 put(Entity.json(updated));
+        assertThat(response.getStatus(),is(200));
 
         // Find again
-        // Find
         JsonObject updateHome = this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 get(JsonObject.class);
-        assertTrue(updateHome.getString("adress").contains("huddinge"));  
-        System.out.println("check update                  : ok "+ updateHome.toString());
+        assertTrue(updateHome.getString("adress").contains("huddinge"));
 
         // listAll again
         response = provider.target().
@@ -96,14 +90,14 @@ public class HomeResourceIntegrationTest {
                 header("Authorization", token).
                 get();
         allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
-
+        assertFalse(allHomes.isEmpty());
         
         
         // delete
-        Response deleteResponse = this.provider.target().
-               path("dagg").
-               request(MediaType.APPLICATION_JSON).delete();
+        Response deleteResponse = this.provider.client().target(location).
+               request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).
+               delete();
         assertThat(deleteResponse.getStatus(), is(204));
         
         // listAll again after delete
@@ -112,7 +106,7 @@ public class HomeResourceIntegrationTest {
                 header("Authorization", token).
                 get();
         allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
+        assertThat(allHomes.size(), is(0));
     }
 
 }

@@ -45,7 +45,11 @@ public class AccountResourceIntegrationTest {
     public void crudAccount() {
 
         // Create account
-        JsonObject accountToCreate = UserAndTokenHelper.createAccount("shoppertest", "timon", "null");
+        JsonObject accountToCreate = Json.createObjectBuilder().
+                add("userId", "shoppertest").
+                add("password", "timon").
+                add("choosedHome", "ej valt").build();
+
         Response postResponse = this.provider.target().
                 request().
                 post(Entity.json(accountToCreate));
@@ -135,21 +139,21 @@ public class AccountResourceIntegrationTest {
         assertThat(deleteResponse.getStatus(), is(204));
 
         // listAll again after delete
+        String lastToken = UserAndTokenHelper.generateTokenThroughRequest("test", "1");
         response = provider.target().
                 request(MediaType.APPLICATION_JSON).
-                header("Authorization", token).
+                header("Authorization", lastToken).
                 get();
-        allAccounts = response.readEntity(JsonArray.class);
-        System.err.println("list allAccounts                : " + allAccounts);
-        
-        // Find
-        location = provider.target().getUri()+"/"+accountToCreate.getString("userId");
-        adminAccount = this.provider.client().
-                target(location).
+        int allAccResponseSize = response.readEntity(JsonArray.class).size();
+        assertThat(allAccResponseSize, is(1));
+
+        // delete test user
+        deleteResponse = this.provider.target().
+                path("test").
                 request(MediaType.APPLICATION_JSON).
-                header("Authorization", token).
-                get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
+                header("Authorization", lastToken).
+                delete();
+        assertThat(deleteResponse.getStatus(), is(204));
 
     }
   
