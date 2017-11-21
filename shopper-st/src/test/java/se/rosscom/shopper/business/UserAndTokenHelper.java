@@ -46,14 +46,5 @@ public class UserAndTokenHelper {
     private static String getUserCredential(String user, String password) {
         return user+":"+password;
     }
-    
-    public static JsonObject createAccount(String userId, String passord, String choosedhome) {
-        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
-        return accountBuilder.
-                add("userId", "shoppertest").
-                add("password", "timon").
-                add("choosedHome", "ej valt").build();
-
-    }
 
 }
