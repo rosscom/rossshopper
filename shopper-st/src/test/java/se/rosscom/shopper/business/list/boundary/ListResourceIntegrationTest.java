@@ -17,6 +17,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.Rule;
 import se.rosscom.shopper.business.EntityHelper;
@@ -45,42 +46,24 @@ public class ListResourceIntegrationTest {
         //account
         EntityHelper.deleteAccountByUserId(userId, token);
     }
+
+    @Before
+    public void createDependencies() {
+        //create account
+        token = UserAndTokenHelper.generateTokenThroughRequest(userId, "psw");
+
+        //create home
+        EntityHelper.createHomeWithName(homeName, token);
+
+        //create family
+        familyId = EntityHelper.createFamilyWithHomeNameAndUserId(homeName, userId, token).toString();
+    }
        
     @Test
     public void crud() {
 
-        token = UserAndTokenHelper.generateTokenThroughRequest(userId, "psw");
-
-        // Create a home
-        JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
-        JsonObject homeToCreate = homeBuilder.
-                add("name", homeName).
-                add("adress", "daggstigen 20").build();
-        
-        Response postResponseHome = this.providerHome.target().request().header("Authorization", token).post(Entity.json(homeToCreate));
-        assertThat(postResponseHome.getStatus(),is(201));
-
-        // Create a family
-        JsonObjectBuilder familyBuilder =  Json.createObjectBuilder();
-        JsonObject familyToCreate = familyBuilder.
-                add("homeName", homeName).
-                add("userId", userId).build();
-
-        Response postResponse = this.providerFamily.target().request().header("Authorization", token).post(Entity.json(familyToCreate));
-        assertThat(postResponse.getStatus(),is(201));
-        String location = postResponse.getHeaderString("Location");
-
-        // find family
-        JsonObject findFamily = this.provider.client().
-                target(location).
-                request(MediaType.APPLICATION_JSON).
-                header("Authorization", token).
-                get(JsonObject.class);
-        assertTrue(findFamily.getJsonObject("home").getString("name").contains(homeName));
-
         // Create listDetail
         JsonObjectBuilder listDeailBuilder =  Json.createObjectBuilder();
-        familyId = findFamily.get("familyId").toString();
         JsonObject listDetailJson = listDeailBuilder.
                 add("familyId", familyId).
                 add("item", "test-item").build();
@@ -90,7 +73,7 @@ public class ListResourceIntegrationTest {
                 header("Authorization", token).
                 post(Entity.json(listDetailJson));
         assertThat(createListDetail.getStatus(), is(201));
-        location = createListDetail.getHeaderString("Location");
+        String location = createListDetail.getHeaderString("Location");
 
         // Find list detail
         JsonObject findListDetail = this.provider.client().

@@ -17,7 +17,7 @@ public class Token implements Serializable {
     private String token;
     private LocalDateTime expirationDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "account")
     private Account account;
 

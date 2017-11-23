@@ -43,9 +43,6 @@ public class Family implements Serializable {
     @JoinColumn(name="home")
     private Home home;
 
-    @OneToMany(mappedBy = "family", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<ListDetail> listDetails;
-
     public Family(Account acc, Home home) {
         this.setAccount(acc);
         this.setHome(home);
@@ -76,13 +73,5 @@ public class Family implements Serializable {
 
     public void setHome(Home home) {
         this.home = home;
-    }
-
-    public List<ListDetail> getListDetails() {
-        return listDetails;
-    }
-
-    public void setListDetails(List<ListDetail> listDetails) {
-        this.listDetails = listDetails;
     }
 }
