@@ -28,7 +28,7 @@ import se.rosscom.shopper.business.UserAndTokenHelper;
 public class FamilyResourceIntegrationTest {
 
     @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/family");
+    public JAXRSClientProvider provider = buildWithURI("https://localhost:8080/shopper/api/family");
 
     private final String userId = "family";
     private final String homeName = "dagg";

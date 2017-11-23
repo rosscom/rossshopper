@@ -21,7 +21,7 @@ import org.junit.Test;
 public class PingIntegrationTest {
 
     @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/ping");
+    public JAXRSClientProvider provider = buildWithURI("https://localhost:8080/shopper/api/ping");
 
     private final String userId = "ping";
     private final String token = UserAndTokenHelper.generateTokenThroughRequest(userId,"1234");

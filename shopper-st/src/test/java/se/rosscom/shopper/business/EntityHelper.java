@@ -12,9 +12,9 @@ import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
 
 public class EntityHelper {
 
-    private static String accountUri = "http://localhost:8080/shopper/api/account";
-    private static String homeUri = "http://localhost:8080/shopper/api/home";
-    private static String familyUri = "http://localhost:8080/shopper/api/family";
+    private static String accountUri = "https://localhost:8080/shopper/api/account";
+    private static String homeUri = "https://localhost:8080/shopper/api/home";
+    private static String familyUri = "https://localhost:8080/shopper/api/family";
 
     public static void deleteAccountByUserId(String userId, String token) {
         JAXRSClientProvider provider = buildWithURI(accountUri);

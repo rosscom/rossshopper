@@ -28,7 +28,7 @@ import se.rosscom.shopper.business.UserAndTokenHelper;
 public class AccountResourceIntegrationTest {
 
     @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/account");
+    public JAXRSClientProvider provider = buildWithURI("https://localhost:8080/shopper/api/account");
 
     private String lastToken;
     

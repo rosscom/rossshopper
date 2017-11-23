@@ -28,7 +28,7 @@ import se.rosscom.shopper.business.UserAndTokenHelper;
 public class HomeResourceIntegrationTest {
         
     @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/home");
+    public JAXRSClientProvider provider = buildWithURI("https://localhost:8080/shopper/api/home");
 
     private final String userId = "home";
     private final String token = UserAndTokenHelper.generateTokenThroughRequest(userId, "psw");

@@ -13,14 +13,14 @@ import org.junit.Rule;
 public class UserAndTokenHelper {
     
     @Rule
-    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
+    public JAXRSClientProvider providerLogin = buildWithURI("https://localhost:8080/shopper/api/auth/login");
 
     public static String generateUserCredentialsThroughRequest(String user, String password) {
         JsonObject accountToCreate = Json.createObjectBuilder()
                 .add("userId", user)
                 .add("password", password).build();
 
-        ClientBuilder.newClient().target("http://localhost:8080/shopper/api/account")
+        ClientBuilder.newClient().target("https://localhost:8080/shopper/api/account")
                 .request()
                 .post(Entity.json(accountToCreate));
 
@@ -28,14 +28,14 @@ public class UserAndTokenHelper {
     }
 
     public static String generateTokenThroughRequest(String user, String password) {
-        return ClientBuilder.newClient().target("http://localhost:8080/shopper/api/auth/login")
+        return ClientBuilder.newClient().target("https://localhost:8080/shopper/api/auth/login")
                 .request()
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((generateUserCredentialsThroughRequest(user, password)).getBytes()))
                 .get(String.class);
     }
     
     public static String generateToken(String user, String password) {
-        return ClientBuilder.newClient().target("http://localhost:8080/shopper/api/auth/login")
+        return ClientBuilder.newClient().target("https://localhost:8080/shopper/api/auth/login")
                 .request()
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((getUserCredential(user, password)).getBytes()))
                 .get(String.class);
