@@ -5,9 +5,10 @@
  */
 package se.rosscom.shopper.business.family.boundary;
 
-import java.net.URI;
 
+import java.net.URI;
 import se.rosscom.shopper.business.authentication.boundary.Secured;
+import se.rosscom.shopper.business.family.entity.FamilyPojo;
 import se.rosscom.shopper.business.home.boundary.*;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -19,8 +20,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.home.entity.Home;
 
 /**
  *
@@ -31,22 +32,37 @@ import se.rosscom.shopper.business.family.entity.Family;
 public class FamilyResource {
     
     @Inject
-    FamilyService familyService;
+    private FamilyService familyService;
 
     @Inject
-    HomeService homeService;
+    private AccountService accountService;
 
-    @Inject
-    AccountService accountService;
-
+    @Secured
     @POST
-    public Response save(AccountHomepk accountHomepk, @Context UriInfo info) {
-        Family saveFamily = familyService.save(accountHomepk);  
-        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getId().getAccount().getUserId()).build();
+    public Response save(FamilyPojo pojo, @Context UriInfo info) {
+        Family saveFamily = familyService.save(pojo);
+        URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getFamilyId()).build();
         return Response.created(uri).build();
     }
+
+    @Secured
     @GET
-    @Path("{userId}")
+    @Path("{family}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("family") Long familyId) {
+        Family family = familyService.findByFamilyId(familyId);
+        if (family == null) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    header("reason", "family: " + familyId + " dont exist").
+                    build();
+        } else {
+            return Response.ok(family).build();
+        }
+    }
+
+    @Secured
+    @GET
+    @Path("/userId/{userId}")
     public Response findByUser(@PathParam("userId") String userId) {
         Account account = accountService.findByUser(userId);
         if (account == null) {
@@ -65,19 +81,19 @@ public class FamilyResource {
         }
     }
 
+    @Secured
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured
     public List<Family> all() {
         return familyService.all();
     }
 
 
+    @Secured
     @DELETE
-    @Path("{home}")
-    public void delete(@PathParam("home") String name) {
-        familyService.delete(name);
-        
+    @Path("{familyId}")
+    public void delete(@PathParam("familyId") Long familyId) {
+        familyService.delete(familyId);
     }
 
 }

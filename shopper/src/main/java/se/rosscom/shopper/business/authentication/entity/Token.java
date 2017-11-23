@@ -7,17 +7,17 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
+@SequenceGenerator(name="token_seq", initialValue=1, allocationSize=1)
 public class Token implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_generator")
-    @SequenceGenerator(name="token_generator", sequenceName = "token_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "token_seq")
     private Long id;
 
     private String token;
     private LocalDateTime expirationDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "account")
     private Account account;
 

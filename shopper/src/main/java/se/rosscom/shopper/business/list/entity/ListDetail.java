@@ -6,13 +6,8 @@
 package se.rosscom.shopper.business.list.entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
+
 import se.rosscom.shopper.business.family.entity.Family;
 
 /**
@@ -21,25 +16,25 @@ import se.rosscom.shopper.business.family.entity.Family;
  */
 @Entity (name = "list_detail")
 @NamedQueries({
-//    @NamedQuery(name = ListDetail.findAll, 
-//                query = " SELECT t from ListDetail t"),
+    @NamedQuery(name = ListDetail.findAll, 
+                query = " SELECT t from list_detail t"),
 //    @NamedQuery(name = ListDetail.findByFamily,
-//                query="SELECT c FROM ListDetail c WHERE c.family = :familyId"),
-}) 
+//                query="SELECT c FROM list_detail c WHERE c.family= :familyId"),
+})
 
-//@NamedQuery(name = ListDetail.findAll, query = " SELECT t from ListDetail t")
+@SequenceGenerator(name="list_detail_seq", initialValue=1, allocationSize=1)
 public class ListDetail implements Serializable {
 
-    static final String PREFIX = "listdetail.entity.ListDetail.";
+    static final String PREFIX = "listdetail.entity.ListDetail";
     public static final String findAll = PREFIX + "findALl";
     public static final String findByFamily = PREFIX + "findByFamily";
-
     
     @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "list_detail_seq")
     private Integer id;
         
     @ManyToOne  
-    @JoinColumn(name="id", insertable = false, updatable = false, nullable=false)
+    @JoinColumn(name="familyId")
     private Family family;
 
     private String item;

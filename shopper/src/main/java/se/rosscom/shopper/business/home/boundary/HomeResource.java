@@ -30,6 +30,7 @@ public class HomeResource {
     @Inject
     HomeService homeService;
 
+    @Secured
     @POST
     public Response save(Home home, @Context UriInfo info) {
         Home saveHome = homeService.save(home);
@@ -38,8 +39,10 @@ public class HomeResource {
         return Response.created(uri).build();
     }
 
+    @Secured
     @GET
     @Path("{name}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Home find(@PathParam("name") String name) {
         return homeService.findByName(name);
     }
@@ -51,22 +54,15 @@ public class HomeResource {
         return homeService.all();
     }
 
+    @Secured
     @PUT
     @Path("{name}")
     public Home update(@PathParam("name") String name, Home home) {
         home.setName(name);
         return homeService.save(home);
     }
-    
-//    @POST
-//    public Response save() {
-//        Family family = homeService.save(home, account);
-//        URI uri = info.getAbsolutePathBuilder().path("/"+family.getUserId()).build();
-//        return Response.created(uri).build();
-//        return Response.ok().build();
-//    }
-    
 
+    @Secured
     @DELETE
     @Path("{name}")
     public void delete(@PathParam("name") String name) {

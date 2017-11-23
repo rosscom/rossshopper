@@ -7,12 +7,15 @@ package se.rosscom.shopper.business.family.boundary;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
+import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
-import se.rosscom.shopper.business.family.entity.AccountHomepk;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.family.entity.FamilyPojo;
+import se.rosscom.shopper.business.home.boundary.HomeService;
 import se.rosscom.shopper.business.home.entity.Home;
 
 /**
@@ -24,42 +27,50 @@ public class FamilyService {
     
     @PersistenceContext
     EntityManager em;
-    
+
+    @Inject
+    private FamilyDao dao;
+
+    @Inject
+    private AccountService accountService; //TODO should be changed to AccountDao
+
+    @Inject
+    private HomeService homeService;
+
     // family
-    public Family save(AccountHomepk family) {
-        Account acc = this.em.find((Account.class), family.getAccount().getUserId());
-        acc.setChoosedHome(family.getHome().getName());
-        return this.em.merge(new Family(family));
+    public Family save(FamilyPojo pojo) {
+        Account user = accountService.findByUser(pojo.userId);
+        Home home = homeService.findByName(pojo.homeName);
+        Family family = new Family();
+        family.setAccount(user);
+        family.setHome(home);
+
+        return dao.save(family);
     }
 
-    public Family findByHome(String home) {
-       return this.em.find((Family.class), home); 
-    }
-
-    public Family findById(String id) {
-       return this.em.find((Family.class), id); 
+    public Family findByHome(Long homeId) {
+       return this.em.find((Family.class), homeId);
     }
     
     public List<Family> all() {
         return this.em.createNamedQuery(Family.findAll,Family.class).getResultList();
     }
     
-    public Home findByName(String name) {
-       return this.em.find((Home.class), name); 
+    public Family findByFamilyId(Long familyId) {
+       return this.em.find((Family.class), familyId);
     }
     
     public List<Family> findByUser(Account account) {
-        TypedQuery<Family> typedQuery = this.em.createNamedQuery(Family.findByUser,Family.class);
-//        typedQuery.setParameter("userId", account.getUserId());
-        typedQuery.setParameter("userId", account);
-        List<Family> results = typedQuery.getResultList();
-        	
-        return results;
+        List<Family> resultList = em.createQuery("SELECT f FROM Family f WHERE f.account.userId = :userId"
+                , Family.class)
+                .setParameter("userId", account.getUserId())
+                .getResultList();
+        return resultList.isEmpty() ? null : resultList;
     }
     
     
-    public void delete(String home) {
-        Family reference = this.findByHome(home);
+    public void delete(Long familyId) {
+        Family reference = this.findByHome(familyId);
         this.em.remove(reference);
     }
 }

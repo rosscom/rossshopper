@@ -27,19 +27,15 @@ public class AccountResource {
     
     @Inject
     private AccountService accountService;
-    
-    @Inject 
-    private TokenService tokenService;
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     public Response save(Account account, @Context UriInfo info) {
         if(account != null && account.isLoggedIn() == null) {
             account.setLoggedIn(Boolean.FALSE);
         }
-        Account savedAccount = accountService.save(account);  
-        // Add authenticate create token
-        String token = tokenService.generateToken(savedAccount);
-        return Response.ok(token).build();
+        Account savedAccount = accountService.save(account);
+        return Response.ok(savedAccount).build();
     }
 
     @Secured

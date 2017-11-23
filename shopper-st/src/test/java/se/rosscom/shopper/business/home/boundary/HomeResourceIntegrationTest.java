@@ -18,22 +18,29 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
+import se.rosscom.shopper.business.EntityHelper;
+import se.rosscom.shopper.business.UserAndTokenHelper;
 
-/**
- *
- * @author ulfrossang
- */
 public class HomeResourceIntegrationTest {
         
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/home");
 
+    private final String userId = "home";
+    private final String token = UserAndTokenHelper.generateTokenThroughRequest(userId, "psw");
+
+    @After
+    public void tearDown() {
+        EntityHelper.deleteAccountByUserId(userId, token);
+    }
        
     @Test
     public void crud() {
-        
+
         // Create a home
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
         JsonObject homeToCreate = homeBuilder.
@@ -41,67 +48,58 @@ public class HomeResourceIntegrationTest {
                 add("adress", "daggstigen 20").build();
         
         // Create 
-        Response postResponse = this.provider.target().request().post(Entity.json(homeToCreate));
+        Response postResponse = this.provider.target().request().header("Authorization", token).post(Entity.json(homeToCreate));
         assertThat(postResponse.getStatus(),is(201));
         String location = postResponse.getHeaderString("Location");
-        System.out.println("Create a home                 : ok "+ homeToCreate.toString());
-        System.out.println("dagg location                 : " +location);
                 
         // Find with name
         JsonObject daggHome = this.provider.client().
                target(location).
                request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).
                get(JsonObject.class);
-        assertTrue(daggHome.getString("name").contains("dagg"));        
-        System.out.println("Find dagg home                : ok " + daggHome.toString());
+        assertTrue(daggHome.getString("name").contains("dagg"));
 
         // listAll
         Response response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
         assertThat(response.getStatus(),is(200));
-        
-        JsonArray allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
-        assertFalse(allHomes.isEmpty());
+        assertThat(response.readEntity(JsonArray.class).stream().anyMatch(json -> ((JsonObject) json).getString("name").equals("dagg")), is(true));
         
         // Update
         JsonObjectBuilder updateBuilder =  Json.createObjectBuilder();
-        JsonObject updated = updateBuilder.
-                add("adress", "huddinge").build();
+        JsonObject updated = updateBuilder.add("adress", "huddinge").build();
         
         this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 put(Entity.json(updated));
+        assertThat(response.getStatus(),is(200));
 
         // Find again
-        // Find
         JsonObject updateHome = this.provider.client().
                 target(location).
                 request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
                 get(JsonObject.class);
-        assertTrue(updateHome.getString("adress").contains("huddinge"));  
-        System.out.println("check update                  : ok "+ updateHome.toString());
-
-        // listAll again
-        response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
-        allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
-
-        
+        assertTrue(updateHome.getString("adress").contains("huddinge"));
         
         // delete
-        Response deleteResponse = this.provider.target().
-               path("dagg").
-               request(MediaType.APPLICATION_JSON).delete();
+        Response deleteResponse = this.provider.client().target(location).
+               request(MediaType.APPLICATION_JSON).
+               header("Authorization", token).
+               delete();
         assertThat(deleteResponse.getStatus(), is(204));
         
         // listAll again after delete
         response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
-        allHomes = response.readEntity(JsonArray.class);
-        System.err.println("list allHomes                 : " + allHomes);
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                get();
+        assertThat(response.readEntity(JsonArray.class).stream().anyMatch(json -> ((JsonObject) json).getString("name").equals("dagg")), is(false));
     }
 
 }
