@@ -14,8 +14,6 @@ public class UserAndTokenHelper {
     
     @Rule
     public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
-    public JAXRSClientProvider accountProvider = buildWithURI("http://localhost:8080/shopper/api/account");
-
 
     public static String generateUserCredentialsThroughRequest(String user, String password) {
         JsonObject accountToCreate = Json.createObjectBuilder()

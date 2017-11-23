@@ -1,19 +1,14 @@
 package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.home.entity.Home;
+import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
  *
@@ -36,7 +31,6 @@ public class Family implements Serializable {
     public static final String findAll = PREFIX + "findALl";
     public static final String findByUser = PREFIX + "findByUser";
     
-    
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long familyId;
@@ -48,6 +42,9 @@ public class Family implements Serializable {
     @ManyToOne  
     @JoinColumn(name="home")
     private Home home;
+
+    @OneToMany(mappedBy = "family", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ListDetail> listDetails;
 
     public Family(Account acc, Home home) {
         this.setAccount(acc);
@@ -80,5 +77,12 @@ public class Family implements Serializable {
     public void setHome(Home home) {
         this.home = home;
     }
-    
+
+    public List<ListDetail> getListDetails() {
+        return listDetails;
+    }
+
+    public void setListDetails(List<ListDetail> listDetails) {
+        this.listDetails = listDetails;
+    }
 }

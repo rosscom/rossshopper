@@ -6,7 +6,7 @@
     <persistence-unit name="shopperdb" transaction-type="JTA">
         <jta-data-source>jdbc/shopper</jta-data-source>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.jdbc.dialect" value="org.hibernate.se.dialect.PostgreSQL82Dialect"/>
         </properties>
     </persistence-unit>
 </persistence>
