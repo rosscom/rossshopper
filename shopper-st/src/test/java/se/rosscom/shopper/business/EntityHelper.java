@@ -27,7 +27,6 @@ public class EntityHelper {
     }
 
     public static void deleteFamilyByFamilyId(String familyId, String token) {
-
         JAXRSClientProvider provider = buildWithURI(familyUri);
         provider.client().target(familyUri + "/" + familyId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
     }

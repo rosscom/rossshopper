@@ -30,7 +30,7 @@ public class ListResourceIntegrationTest {
     public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
     public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
 
-    private final String userId = "user";
+    private final String userId = "list";
     private final String homeName = "dagg";
     private String familyId;
     private String token;

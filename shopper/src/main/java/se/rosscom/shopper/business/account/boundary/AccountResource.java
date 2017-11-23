@@ -29,6 +29,7 @@ public class AccountResource {
     private AccountService accountService;
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     public Response save(Account account, @Context UriInfo info) {
         if(account != null && account.isLoggedIn() == null) {
             account.setLoggedIn(Boolean.FALSE);
