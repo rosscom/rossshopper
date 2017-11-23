@@ -16,7 +16,7 @@ public class Token implements Serializable {
     private String token;
     private LocalDateTime expirationDate;
 
-    @OneToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "account")
     private Account account;
 

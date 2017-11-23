@@ -38,8 +38,8 @@ public class AccountResource {
         }
         Account savedAccount = accountService.save(account);  
         // Add authenticate create token
-        String token = tokenService.generateToken(savedAccount);
-        return Response.ok(token).build();
+        //String token = tokenService.generateToken(savedAccount);
+        return Response.ok(savedAccount).build();
     }
 
     @Secured
