@@ -68,7 +68,21 @@ public class AccountResource {
         account.setUserId(userId);
         return accountService.save(account);
     }
-
+    
+    @GET
+    @Path("{loggedIn}")
+    public List<Account> findLoggedIn(@PathParam("loggedIn") String loggedIn) {
+        List<Account> accounts = accountService.findByLoggedIn(loggedIn);
+        return accounts;
+        // TODO add errorhandling
+//        if (accounts == null) {
+//            return Response.status(Response.Status.NOT_FOUND).
+//                    header("reason", "no one loggedIn").
+//                    build();
+//        } else {
+//            return accounts;
+//        }
+    }
 
     @Secured
     @DELETE
@@ -76,4 +90,9 @@ public class AccountResource {
     public void delete(@PathParam("user") String userId) {
         accountService.delete(userId);
     }
+    
+
+    
+    
+    
 }

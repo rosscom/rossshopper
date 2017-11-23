@@ -35,9 +35,15 @@ public class AccountService {
        return account;
     }
 
-    public Account findByUserName(final String userId) {
-        List<Account> resultList = em.createQuery("select a from Account a where a.userId = :userId", Account.class)
-                .setParameter("userId", userId)
+
+    public List<Account> findByLoggedIn(String loggedIn) {
+   //     TypedQuery<Account> typedQuery = this.em.createNamedQuery(Account.findByLoggedIn, Account.class).getResultList();
+        
+        return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
+    }
+    public Account findByUserName(final String userName) {
+        List<Account> resultList = em.createQuery("select a from Account a where a.userName = :userName", Account.class)
+                .setParameter("userName", userName)
                 .getResultList();
         return resultList.isEmpty() ? null : resultList.get(0);
     }
@@ -45,13 +51,26 @@ public class AccountService {
     public List<Account> all() {
         return this.em.createNamedQuery(Account.findAll,Account.class).getResultList();
     }
+
+    public Account login(String user, boolean loggedin) {
+        Account account = this.findByUser(user);
+        account.setLoggedIn(loggedin);
+        return account;
+    }
+
+    public boolean login(Account account, boolean loggedin) {
+        Account checkAccount = this.findByUser(account.getUserId());
+        if (account.getPassword().equals(checkAccount.getPassword())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public void delete(String user) {
-        this.em.createNativeQuery("DELETE FROM token WHERE account = ?1")
-                .setParameter(1, user).executeUpdate();
-
-        this.em.createNativeQuery("DELETE FROM account WHERE userid = ?1")
-                .setParameter(1, user).executeUpdate();
+        Account reference = this.em.getReference(Account.class, user);
+        this.em.remove(reference);
+        this.em.clear();
     }
 
     
