@@ -37,9 +37,7 @@ public class AccountResource {
             account.setLoggedIn(Boolean.FALSE);
         }
         Account savedAccount = accountService.save(account);  
-        // Add authenticate create token
-        //String token = tokenService.generateToken(savedAccount);
-        return Response.ok(savedAccount).build();
+         return Response.ok(savedAccount).build();
     }
 
     @Secured
