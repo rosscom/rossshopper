@@ -74,9 +74,9 @@ public class SSLTest {
         Client client = clientBuilder.withConfig(new ClientConfig()).build();
 
 
-        String token = client.target("https://www.rosscom.se:8080/shopper/api/auth/login")
+        String token = client.target("https://localhost:8080/shopper/api/auth/login")
                 .request()
-                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((generateUserCredentialsThroughRequest(client)).getBytes()))
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(("user:psw").getBytes()))
                 .get(String.class);
 
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
@@ -84,22 +84,8 @@ public class SSLTest {
                 add("name", "dagg").
                 add("adress", "daggstigen 20").build();
 
-        Response postResponse = client.target("https://www.rosscom.se:8080/shopper/api/home").request().header("Authorization", token).post(Entity.json(homeToCreate));;
+        Response postResponse = client.target("https://localhost:8080/shopper/api/home").request().header("Authorization", token).post(Entity.json(homeToCreate));;
         assertThat(postResponse.getStatus(),is(201));
         System.out.println(postResponse.getHeaderString("Location"));
-
-    }
-
-    private String generateUserCredentialsThroughRequest(Client client) {
-        JsonObject accountToCreate = Json.createObjectBuilder()
-                .add("userId", "user")
-                .add("password", "psw").build();
-
-        client.target("https://www.rosscom.se:8080/shopper/api/account")
-                .request()
-                .post(Entity.json(accountToCreate));
-
-        return "user:psw";
-
     }
 }
