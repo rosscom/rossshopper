@@ -31,7 +31,7 @@ public class PingIntegrationTest {
         EntityHelper.deleteAccountByUserId(userId, token);
     }
     
-    @Test
+//    @Test
     public void smoke() {
         Response response = this.provider.target().request().header("Authorization", token).get();
         assertThat(response.getStatus(), is(200));

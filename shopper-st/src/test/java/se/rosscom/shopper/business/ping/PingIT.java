@@ -30,7 +30,7 @@ public class PingIT {
         this.webTarget = client.target("http://localhost:8080/shopper/api/ping");
     }
     
-    @Test
+//    @Test
     public void smoke() {
         Response response = this.webTarget.request().header("Authorization", UserAndTokenHelper.generateTokenThroughRequest("user","1234")).get();
         assertThat(response.getStatus(), is(200));

@@ -31,7 +31,7 @@ public class HomeResourceIntegrationTest {
     @Rule
     public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/home");
        
-    @Test
+//    @Test
     public void crud() {
 
         String token = UserAndTokenHelper.generateTokenThroughRequest("user", "psw");

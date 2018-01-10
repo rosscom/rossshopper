@@ -31,7 +31,7 @@ public class FamilyResourceIntegrationTest {
 
     public String token = null;
   
-    @Test
+//    @Test
     public void crud() {
         
         token = UserAndTokenHelper.generateTokenThroughRequest("shoppertest", "timon");
