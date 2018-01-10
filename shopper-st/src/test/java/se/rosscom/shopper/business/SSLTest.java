@@ -2,29 +2,19 @@ package se.rosscom.shopper.business;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
-import se.rosscom.shopper.business.UserAndTokenHelper;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.net.ssl.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.Base64;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class SSLTest {
 
-    @Test
     public void testSSLConnection() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
 
         KeyStore ks = KeyStore.getInstance("JKS");
@@ -51,15 +41,7 @@ public class SSLTest {
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(("user:psw").getBytes()))
                 .get(String.class);
 
-        System.out.println("######################### After, login.....");
-
-        JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
-        JsonObject homeToCreate = homeBuilder.
-                add("name", "dagg").
-                add("adress", "daggstigen 20").build();
-
-        Response postResponse = client.target("https://localhost:8080/shopper/api/home").request().header("Authorization", token).post(Entity.json(homeToCreate));;
-        assertThat(postResponse.getStatus(),is(201));
-        System.out.println(postResponse.getHeaderString("Location"));
+        assertTrue(token != null);
+        System.out.println("######################### Token: + " + token + " , from login-request");
     }
 }
