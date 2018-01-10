@@ -30,26 +30,26 @@ public class SSLTest {
     @Test
     public void testSSLConnection() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
 
-//        KeyStore ks = KeyStore.getInstance("JKS");
-//        ks.load(new FileInputStream("/home/rosscom/clientkeystore"), "vik012vik".toCharArray());
+        KeyStore ks = KeyStore.getInstance("JKS");
+        ks.load(new FileInputStream("/home/rosscom/clientkeystore"), "vik012vik".toCharArray());
+
+        TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        factory.init(ks);
+        TrustManager[] certs = factory.getTrustManagers();
+//        TrustManager[] certs = new TrustManager[]{new X509TrustManager() {
+//            @Override
+//            public X509Certificate[] getAcceptedIssuers() {
+//                return null;
+//            }
 //
-//        TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-//        factory.init(ks);
-//        TrustManager[] certs = factory.getTrustManagers();
-        TrustManager[] certs = new TrustManager[]{new X509TrustManager() {
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                return null;
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            }
-
-            @Override
-            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            }
-        }};
+//            @Override
+//            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+//            }
+//
+//            @Override
+//            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+//            }
+//        }};
 
         SSLContext ctx = null;
         try {
@@ -78,6 +78,8 @@ public class SSLTest {
                 .request()
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(("user:psw").getBytes()))
                 .get(String.class);
+
+        System.out.println("######################### After, login.....");
 
         JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
         JsonObject homeToCreate = homeBuilder.
