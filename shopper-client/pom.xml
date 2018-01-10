@@ -92,7 +92,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                    <useIncrementalCompilation>true</useIncrementalCompilation>
                     <compilerArguments>
                         <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar</bootclasspath>
                     </compilerArguments>
