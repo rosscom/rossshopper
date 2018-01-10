@@ -84,7 +84,7 @@ public class SSLTest {
                 .add("userId", "user")
                 .add("password", "psw").build();
 
-        client.target("http://localhost:8080/shopper/api/account")
+        client.target("https://localhost:8080/shopper/api/account")
                 .request()
                 .post(Entity.json(accountToCreate));
 
