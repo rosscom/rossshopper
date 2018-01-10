@@ -14,10 +14,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
@@ -28,7 +25,7 @@ import static org.junit.Assert.assertThat;
 public class SSLTest {
 
     @Test
-    public void testSSLConnection() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+    public void testSSLConnection() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
 
         KeyStore ks = KeyStore.getInstance("JKS");
         ks.load(new FileInputStream("/home/rosscom/clientkeystore"), "vik012vik".toCharArray());
@@ -36,40 +33,15 @@ public class SSLTest {
         TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         factory.init(ks);
         TrustManager[] certs = factory.getTrustManagers();
-//        TrustManager[] certs = new TrustManager[]{new X509TrustManager() {
-//            @Override
-//            public X509Certificate[] getAcceptedIssuers() {
-//                return null;
-//            }
-//
-//            @Override
-//            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-//            }
-//
-//            @Override
-//            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-//            }
-//        }};
 
-        SSLContext ctx = null;
-        try {
-            ctx = SSLContext.getInstance("TLS");
-            ctx.init(null, certs, new SecureRandom());
-        } catch (java.security.GeneralSecurityException e) {
-            System.out.println("ERROR");
-            e.printStackTrace();
-        }
+        SSLContext ctx = SSLContext.getInstance("TLS");
+        ctx.init(null, certs, new SecureRandom());
 
         HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
 
         ClientBuilder clientBuilder = ClientBuilder.newBuilder();
-        try {
-            clientBuilder.sslContext(ctx);
-            clientBuilder.hostnameVerifier((hostname, session) -> true);
-        } catch (Exception e) {
-            System.out.println("ERROR");
-            e.printStackTrace();
-        }
+        clientBuilder.sslContext(ctx);
+        clientBuilder.hostnameVerifier((hostname, session) -> true);
 
         Client client = clientBuilder.withConfig(new ClientConfig()).build();
 
