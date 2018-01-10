@@ -7,13 +7,13 @@ import javax.json.JsonObject;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import java.util.Base64;
-import javax.json.JsonObjectBuilder;
 import org.junit.Rule;
 
 public class UserAndTokenHelper {
     
     @Rule
-    public JAXRSClientProvider providerLogin = buildWithURI("https://localhost:8080/shopper/api/auth/login");
+    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
+    public JAXRSClientProvider accountProvider = buildWithURI("http://localhost:8080/shopper/api/account");
 
     public static String generateUserCredentialsThroughRequest(String user, String password) {
         JsonObject accountToCreate = Json.createObjectBuilder()

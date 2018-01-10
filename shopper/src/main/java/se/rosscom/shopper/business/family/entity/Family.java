@@ -1,14 +1,19 @@
 package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.home.entity.Home;
-import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
  *
@@ -30,6 +35,7 @@ public class Family implements Serializable {
     static final String PREFIX = "family.entity.Family.";
     public static final String findAll = PREFIX + "findALl";
     public static final String findByUser = PREFIX + "findByUser";
+    
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -74,4 +80,5 @@ public class Family implements Serializable {
     public void setHome(Home home) {
         this.home = home;
     }
+    
 }

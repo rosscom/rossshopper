@@ -8,7 +8,6 @@ package se.rosscom.shopper.business.family.boundary;
 
 import java.net.URI;
 import se.rosscom.shopper.business.authentication.boundary.Secured;
-import se.rosscom.shopper.business.family.entity.FamilyPojo;
 import se.rosscom.shopper.business.home.boundary.*;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -39,8 +38,8 @@ public class FamilyResource {
 
     @Secured
     @POST
-    public Response save(FamilyPojo pojo, @Context UriInfo info) {
-        Family saveFamily = familyService.save(pojo);
+    public Response save(Family family, @Context UriInfo info) {
+        Family saveFamily = familyService.save(family);  
         URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getFamilyId()).build();
         return Response.created(uri).build();
     }
@@ -62,7 +61,7 @@ public class FamilyResource {
 
     @Secured
     @GET
-    @Path("/userId/{userId}")
+    @Path("{userId}")
     public Response findByUser(@PathParam("userId") String userId) {
         Account account = accountService.findByUser(userId);
         if (account == null) {
