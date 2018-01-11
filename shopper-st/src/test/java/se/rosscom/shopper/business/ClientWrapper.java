@@ -45,8 +45,10 @@ public class ClientWrapper {
             clientBuilder.sslContext(ctx);
             clientBuilder.hostnameVerifier((hostname, session) -> true);
 
+            System.out.println("###### URL: " + url);
             //TODO awful way of handling different urls... works for now. maybe env-properties file?
             String httpsString = new StringBuilder(url).insert(4, "s").toString();
+            System.out.println("###### NEW URL: " + httpsString);
 
             return clientBuilder.withConfig(new ClientConfig()).build().target(httpsString);
         } else {
