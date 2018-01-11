@@ -1,14 +1,7 @@
 package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +23,7 @@ import se.rosscom.shopper.business.home.entity.Home;
 }) 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@SequenceGenerator(name="family_seq", initialValue=1, allocationSize=1)
 public class Family implements Serializable {
 
     static final String PREFIX = "family.entity.Family.";
@@ -38,7 +32,7 @@ public class Family implements Serializable {
     
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "family_seq")
     private Long familyId;
 
     @ManyToOne  
