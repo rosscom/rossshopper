@@ -13,12 +13,11 @@ import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
 public class EntityHelper {
 
     private static String accountUri = "http://localhost:8080/shopper/api/account";
-    private static String homeUri = "https://localhost:8080/shopper/api/home";
-    private static String familyUri = "https://localhost:8080/shopper/api/family";
+    private static String homeUri = "http://localhost:8080/shopper/api/home";
+    private static String familyUri = "http://localhost:8080/shopper/api/family";
 
     public static void deleteAccountByUserId(String userId, String token) {
         ClientWrapper.createClient(accountUri + "/" + userId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
-        System.out.println("Jiha..");
     }
 
     public static void deleteHomeByHomeName(String name, String token) {
@@ -32,13 +31,13 @@ public class EntityHelper {
     }
 
     public static void createHomeWithName(String homeName, String token) {
-        buildWithURI(homeUri).target().request().header("Authorization", token).post(Entity.json(Json.createObjectBuilder().add("name", homeName).build()));
+        ClientWrapper.createClient(homeUri).request().header("Authorization", token).post(Entity.json(Json.createObjectBuilder().add("name", homeName).build()));
     }
 
     public static Integer createFamilyWithHomeNameAndUserId(String homeName, String userId, String token) {
         JsonObject familyToCreate = Json.createObjectBuilder().add("homeName", homeName).add("userId", userId).build();
-        Response res = buildWithURI(familyUri).target().request().header("Authorization", token).post(Entity.json(familyToCreate));
+        Response res = ClientWrapper.createClient(familyUri).request().header("Authorization", token).post(Entity.json(familyToCreate));
         String loc = res.getHeaderString("Location");
-        return buildWithURI(familyUri).client().target(loc).request(MediaType.APPLICATION_JSON).header("Authorization", token).get(JsonObject.class).getInt("familyId");
+        return ClientWrapper.createClient(loc).request(MediaType.APPLICATION_JSON).header("Authorization", token).get(JsonObject.class).getInt("familyId");
     }
 }

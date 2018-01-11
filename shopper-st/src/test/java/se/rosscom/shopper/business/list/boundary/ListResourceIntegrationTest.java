@@ -5,9 +5,6 @@
  */
 package se.rosscom.shopper.business.list.boundary;
 
-import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
-import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
-import java.util.Base64;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -16,151 +13,84 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.Rule;
+import se.rosscom.shopper.business.ClientWrapper;
+import se.rosscom.shopper.business.EntityHelper;
+import se.rosscom.shopper.business.UserAndTokenHelper;
 
-/**
- *
- * @author ulfrossang
- */
 public class ListResourceIntegrationTest {
-    
-        
-    @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/listdetail");
-    public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
-    public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
-    public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
-    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
 
-       
-//    @Test
+    private String url = "http://localhost:8080/shopper/api/listdetail";
+    private final String userId = "list";
+    private final String homeName = "dagg";
+    private String familyId;
+    private String token;
+
+    @After
+    public void tearDown() {
+        //family
+        EntityHelper.deleteFamilyByFamilyId(familyId, token);
+
+        //home
+        EntityHelper.deleteHomeByHomeName(homeName, token);
+
+        //account
+        EntityHelper.deleteAccountByUserId(userId, token);
+    }
+
+    @Before
+    public void createDependencies() {
+        //create account
+        token = UserAndTokenHelper.generateTokenThroughRequest(userId, "psw");
+
+        //create home
+        EntityHelper.createHomeWithName(homeName, token);
+
+        //create family
+        familyId = EntityHelper.createFamilyWithHomeNameAndUserId(homeName, userId, token).toString();
+    }
+
+    @Test
     public void crud() {
-        
-        
-        // Create a home
-        JsonObjectBuilder homeBuilder =  Json.createObjectBuilder();
-        JsonObject homeToCreate = homeBuilder.
-                add("name", "dagg").
-                add("adress", "daggstigen 20").build();
-        
-        Response postResponseHome = this.providerHome.target().request().post(Entity.json(homeToCreate));
-        assertThat(postResponseHome.getStatus(),is(201));
-        String locationHome = postResponseHome.getHeaderString("Location");
-        System.out.println("Create a home                 : ok "+ homeToCreate.toString());
-        
-        // Find home with name
-        JsonObject daggHome = this.providerHome.client().
-               target(locationHome).
-               request(MediaType.APPLICATION_JSON).
-               get(JsonObject.class);
-        assertTrue(daggHome.getString("name").contains("dagg"));        
-        System.out.println("Find dagg home                : ok " + daggHome.toString());
 
-        // Create an account
-        JsonObjectBuilder accountBuilder =  Json.createObjectBuilder();
-        JsonObject accountToCreate = accountBuilder.
-                add("userId", "shoppertest").
-                add("password", "timon").build();
+        // Create listDetail
+        JsonObjectBuilder listDeailBuilder =  Json.createObjectBuilder();
+        JsonObject listDetailJson = listDeailBuilder.
+                add("familyId", familyId).
+                add("item", "test-item").build();
 
-        Response postResponseAccount = this.providerAccount.target().request().post(Entity.json(accountToCreate));
-        assertThat(postResponseAccount.getStatus(),is(200));
-        System.out.println("Create an account             : ok "+ accountToCreate.toString());
-
-        
-        
-        String basicAuthString =  "Basic " + Base64.getEncoder().encodeToString(("shoppertest:timon").getBytes());
-        String token = this.providerLogin.target().
-                request().
-                header("Authorization", basicAuthString).
-                get(String.class);
-        assertThat(token, startsWith("Auth-shopper"));
-        
-        System.out.println("Create an account               : ok "+ accountToCreate.toString());
-        System.out.println("token                           : " +token);
-        String location = providerAccount.target().getUri()+"/"+accountToCreate.getString("userId");
-
-        JsonObject adminAccount = this.providerAccount.client().
-               target(location).
-               request(MediaType.APPLICATION_JSON).
-               header("Authorization", token).                
-               get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
-        System.out.println("Find admin account            : ok " + adminAccount.toString());
-        
-        // Create a family
-        JsonObjectBuilder familyBuilder =  Json.createObjectBuilder();
-        JsonObject familyToCreate = familyBuilder.
-                add("home", daggHome).
-                add("account", adminAccount).build();
-       
- 
-        Response postResponse = this.providerFamily.target().request().post(Entity.json(familyToCreate));
-        assertThat(postResponse.getStatus(),is(201));
-        location = postResponse.getHeaderString("Location");
-        System.out.println("Create an family              : ok "+ familyToCreate.toString());
-        System.out.println("location                      : ok "+location );
-
-        
-        System.out.println(familyToCreate.getJsonObject("home"));
-        System.out.println(familyToCreate.getJsonObject("account"));
-
-        
-
-        // listAll
-        Response response = providerFamily.target().
+        Response createListDetail = ClientWrapper.createClient(url).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
-                get();
-        assertThat(response.getStatus(),is(200));
-        
-        JsonArray allFamilys = response.readEntity(JsonArray.class);
-        System.out.println("list allFamilys               : " + allFamilys);
-        assertFalse(allFamilys.isEmpty());
+                post(Entity.json(listDetailJson));
+        assertThat(createListDetail.getStatus(), is(201));
+        String location = createListDetail.getHeaderString("Location");
 
-        // Find with family TODO
-//        JsonObject familyDaggShopper = this.provider.client().
-//               target(location).
-//               request(MediaType.APPLICATION_JSON).
-//               get(JsonObject.class);
-//        assertTrue(familyDaggShopper.getString("home").contains("dagg"));        
-//        System.out.println("Find family with dagg shopper    : ok " + familyDaggShopper.toString());
-//
-//        // Find admin account
-//        accountBuilder =  Json.createObjectBuilder();
-//        JsonObject accountToFind = accountBuilder.
-//                add("userId", "admin").
-//                add("password", "password").build();
-//        location = this.providerFamily.target().getUriBuilder().toString();
-//        System.out.println("location                      : ok "+location );
-
-        /* TODO
-        JsonArray accountFamily = this.providerFamily.client().
-                target(location).
-                path(accountToFind.getString("userId")).
+        // Find list detail
+        JsonObject findListDetail = ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
-                get(JsonArray.class);
-        assertTrue(accountFamily.size()>0);
-        System.out.println("                              :"+accountToFind.getString("userId"));
-        System.err.println("list family                   : " + accountFamily);
-        
+                header("Authorization", token).
+                get(JsonObject.class);
+        assertTrue(findListDetail.getString("item").contains("test-item"));
 
-        // listAll
-        response = provider.target().
-                request(MediaType.APPLICATION_JSON).get();
-        assertThat(response.getStatus(),is(200));
-        
-        JsonArray allListDetail = response.readEntity(JsonArray.class);
-        System.err.println("allListDetail                 : ok " + allListDetail);
 
-        */
-//        assertFalse(allListDetail.isEmpty());
-        
+        // Delete list detail
+        Response deleteListDetail = ClientWrapper.createClient(location).
+                request(MediaType.APPLICATION_JSON).
+                header("Authorization", token).
+                delete();
+        assertThat(deleteListDetail.getStatus(), is(204));
 
+
+        // listAll again
+        Response listAllResponse = ClientWrapper.createClient(url).request(MediaType.APPLICATION_JSON).header("Authorization", token).get();
+        assertThat(listAllResponse.getStatus(),is(200));
+        assertThat(listAllResponse.readEntity(JsonArray.class).stream().anyMatch(json -> ((JsonObject) json).getString("item").equals("test-item")), is(false));
     }
 
     

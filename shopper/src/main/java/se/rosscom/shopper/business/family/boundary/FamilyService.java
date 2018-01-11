@@ -7,10 +7,15 @@ package se.rosscom.shopper.business.family.boundary;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import se.rosscom.shopper.business.account.boundary.AccountService;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.family.entity.Family;
+import se.rosscom.shopper.business.family.entity.FamilyPojo;
+import se.rosscom.shopper.business.home.boundary.HomeService;
 import se.rosscom.shopper.business.home.entity.Home;
 
 /**
@@ -22,10 +27,24 @@ public class FamilyService {
     
     @PersistenceContext
     EntityManager em;
-    
-    // family
-    public Family save(Family family) {
-        return this.em.merge(family);
+
+    @Inject
+    private FamilyDao dao;
+
+    @Inject
+    private AccountService accountService; //TODO should be changed to AccountDao
+
+    @Inject
+    private HomeService homeService;
+
+    public Family save(FamilyPojo pojo) {
+        Account user = accountService.findByUser(pojo.userId);
+        Home home = homeService.findByName(pojo.homeName);
+        Family family = new Family();
+        family.setAccount(user);
+        family.setHome(home);
+
+        return dao.save(family);
     }
 
     public Family findByHome(Long homeId) {

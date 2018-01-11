@@ -4,7 +4,6 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 import java.util.Base64;
 
 public class UserAndTokenHelper {
@@ -17,7 +16,7 @@ public class UserAndTokenHelper {
                 .add("userId", user)
                 .add("password", password).build();
 
-        Response response = targetAcc.request().post(Entity.json(accountToCreate));
+        targetAcc.request().post(Entity.json(accountToCreate));
 
         return getUserCredential(user,password);
     }
