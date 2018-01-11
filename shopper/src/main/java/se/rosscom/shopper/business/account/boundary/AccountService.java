@@ -41,12 +41,6 @@ public class AccountService {
         
         return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
     }
-    public Account findByUserName(final String userName) {
-        List<Account> resultList = em.createQuery("select a from Account a where a.userName = :userName", Account.class)
-                .setParameter("userName", userName)
-                .getResultList();
-        return resultList.isEmpty() ? null : resultList.get(0);
-    }
 
     public List<Account> all() {
         return this.em.createNamedQuery(Account.findAll,Account.class).getResultList();
@@ -66,11 +60,11 @@ public class AccountService {
             return false;
         }
     }
-    
+
     public void delete(String user) {
-        Account reference = this.em.getReference(Account.class, user);
-        this.em.remove(reference);
-        this.em.clear();
+        Account acc = this.em.find((Account.class), user);
+        this.em.refresh(acc);
+        this.em.remove(acc);
     }
 
     

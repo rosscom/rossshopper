@@ -5,11 +5,11 @@
  */
 package se.rosscom.shopper.business.account.entity;
 
+import se.rosscom.shopper.business.authentication.entity.Token;
+
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,6 +41,9 @@ public class Account implements Serializable {
 
     private Boolean loggedIn;
     private String choosedHome;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="account", orphanRemoval = true)
+    public List<Token> tokens;
 
     public Account(String userId, String password, String choosedHome, String mail) {
         this.userId = userId;

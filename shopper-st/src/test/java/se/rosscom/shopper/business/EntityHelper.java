@@ -12,13 +12,13 @@ import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
 
 public class EntityHelper {
 
-    private static String accountUri = "https://localhost:8080/shopper/api/account";
+    private static String accountUri = "http://localhost:8080/shopper/api/account";
     private static String homeUri = "https://localhost:8080/shopper/api/home";
     private static String familyUri = "https://localhost:8080/shopper/api/family";
 
     public static void deleteAccountByUserId(String userId, String token) {
-        JAXRSClientProvider provider = buildWithURI(accountUri);
-        provider.client().target(accountUri + "/" + userId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
+        ClientWrapper.createClient(accountUri + "/" + userId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
+        System.out.println("Jiha..");
     }
 
     public static void deleteHomeByHomeName(String name, String token) {
