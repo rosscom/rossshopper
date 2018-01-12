@@ -20,8 +20,12 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
+import se.rosscom.shopper.business.ClientWrapper;
+import se.rosscom.shopper.business.EntityHelper;
 import se.rosscom.shopper.business.UserAndTokenHelper;
 
 /**
@@ -30,18 +34,16 @@ import se.rosscom.shopper.business.UserAndTokenHelper;
  */
 public class AccountResourceIntegrationTest {
 
-    @Rule
-    public JAXRSClientProvider provider = buildWithURI("http://localhost:8080/shopper/api/account");
-    public JAXRSClientProvider providerFamily = buildWithURI("http://localhost:8080/shopper/api/family");
-    public JAXRSClientProvider providerHome = buildWithURI("http://localhost:8080/shopper/api/home");
-    public JAXRSClientProvider providerAccount = buildWithURI("http://localhost:8080/shopper/api/account");
-    public JAXRSClientProvider providerLogin = buildWithURI("http://localhost:8080/shopper/api/auth/login");
 
-    public String token = null;
-    
-    
+    private String url = "http://localhost:8080/shopper/api/account";
+    private String lastToken;
 
-//    @Test
+    @After
+    public void tearDown() {
+        EntityHelper.deleteAccountByUserId("test", lastToken);
+    }
+
+    @Test
     public void crudAccount() {
 
         // Create account
@@ -50,57 +52,43 @@ public class AccountResourceIntegrationTest {
                 add("password", "timon").
                 add("choosedHome", "ej valt").build();
 
-        Response postResponse = this.provider.target().
+        Response postResponse = ClientWrapper.createClient(url).
                 request().
                 post(Entity.json(accountToCreate));
         assertThat(postResponse.getStatus(),is(200));
-        
-        token = UserAndTokenHelper.generateToken("shoppertest", "timon");
-       
-        String location = provider.target().getUri()+"/"+accountToCreate.getString("userId");
+        String token = UserAndTokenHelper.generateToken("shoppertest", "timon");
+        String location = ClientWrapper.createClient(url).getUri()+"/"+accountToCreate.getString("userId");
+
         // Find
-        JsonObject adminAccount = this.provider.client().
-                target(location).
+        JsonObject adminAccount = ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 get(JsonObject.class);
-        assertTrue(adminAccount.getString("userId").contains("shoppertest"));   
-        
+        assertTrue(adminAccount.getString("userId").contains("shoppertest"));
+
         // listAll
-        Response response = provider.target().
+        Response response = ClientWrapper.createClient(url).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 get();
         assertThat(response.getStatus(),is(200));
-
-        JsonArray allAccounts = response.readEntity(JsonArray.class);
-        assertFalse(allAccounts.isEmpty());
+        assertThat(response.readEntity(JsonArray.class).stream().anyMatch(json -> ((JsonObject) json).getString("userId").equals("shoppertest")), is(true));
 
         // Update
         JsonObjectBuilder updateBuilder =  Json.createObjectBuilder();
-        JsonObject updated = updateBuilder.
-                add("password", "nilsudden").build();
-        
-        this.provider.client().
-                target(location).
+        JsonObject updated = updateBuilder.add("password", "nilsudden").build();
+
+        ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 put(Entity.json(updated));
 
         // Find
-        JsonObject updateAccount = this.provider.client().
-                target(location).
+        JsonObject updateAccount = ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 get(JsonObject.class);
-        assertTrue(updateAccount.getString("password").contains("nilsudden"));  
-
-        // listAll again
-        response = provider.target().
-                request(MediaType.APPLICATION_JSON).
-                header("Authorization", token).
-                get();
-        allAccounts = response.readEntity(JsonArray.class);
+        assertTrue(updateAccount.getString("password").contains("nilsudden"));
 
         // Status update (login)
         JsonObjectBuilder loginBuilder =  Json.createObjectBuilder();
@@ -108,30 +96,21 @@ public class AccountResourceIntegrationTest {
                 add("password", "nilsudden").
                 add("loggedIn", true).
                 build();
-       
-        this.provider.client().
-                target(location).
+
+        ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 put(Entity.json(updateAccount));
- 
+
         // Verify status
-        updateAccount = this.provider.client().
-                target(location).
+        updateAccount = ClientWrapper.createClient(location).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
                 get(JsonObject.class);
         assertTrue(updateAccount.getBoolean("loggedIn"));
-        
-        // listAll again after login
-        response = provider.target().
-                request(MediaType.APPLICATION_JSON).
-                header("Authorization", token).
-                get();
-        allAccounts = response.readEntity(JsonArray.class);
 
         // delete
-        Response deleteResponse = this.provider.target().
+        Response deleteResponse = ClientWrapper.createClient(url).
                 path("shoppertest").
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", token).
@@ -139,22 +118,12 @@ public class AccountResourceIntegrationTest {
         assertThat(deleteResponse.getStatus(), is(204));
 
         // listAll again after delete
-        String lastToken = UserAndTokenHelper.generateTokenThroughRequest("test", "1");
-        response = provider.target().
+        lastToken = UserAndTokenHelper.generateTokenThroughRequest("test", "1");
+        response = ClientWrapper.createClient(url).
                 request(MediaType.APPLICATION_JSON).
                 header("Authorization", lastToken).
                 get();
-        int allAccResponseSize = response.readEntity(JsonArray.class).size();
-        assertThat(allAccResponseSize, is(1));
-
-        // delete test user
-        deleteResponse = this.provider.target().
-                path("test").
-                request(MediaType.APPLICATION_JSON).
-                header("Authorization", lastToken).
-                delete();
-        assertThat(deleteResponse.getStatus(), is(204));
-
+        assertThat(response.readEntity(JsonArray.class).stream().anyMatch(json -> ((JsonObject) json).getString("userId").equals("shoppertest")), is(false));
     }
   
 
