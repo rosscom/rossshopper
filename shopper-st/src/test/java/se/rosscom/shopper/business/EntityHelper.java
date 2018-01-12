@@ -1,14 +1,10 @@
 package se.rosscom.shopper.business;
 
-import com.airhacks.rulz.jaxrsclient.JAXRSClientProvider;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import static com.airhacks.rulz.jaxrsclient.JAXRSClientProvider.buildWithURI;
 
 public class EntityHelper {
 
@@ -21,13 +17,11 @@ public class EntityHelper {
     }
 
     public static void deleteHomeByHomeName(String name, String token) {
-        JAXRSClientProvider provider = buildWithURI(homeUri);
-        provider.client().target(homeUri + "/" + name).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
+        ClientWrapper.createClient(homeUri + "/" + name).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
     }
 
     public static void deleteFamilyByFamilyId(String familyId, String token) {
-        JAXRSClientProvider provider = buildWithURI(familyUri);
-        provider.client().target(familyUri + "/" + familyId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
+        ClientWrapper.createClient(familyUri + "/" + familyId).request(MediaType.APPLICATION_JSON).header("Authorization", token).delete();
     }
 
     public static void createHomeWithName(String homeName, String token) {
