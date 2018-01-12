@@ -4,4 +4,7 @@ public class FamilyPojo {
 
     public String userId;
     public String homeName;
+
+    public FamilyPojo() {
+    }
 }
