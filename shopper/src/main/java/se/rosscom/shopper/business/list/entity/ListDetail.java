@@ -35,7 +35,7 @@ public class ListDetail implements Serializable {
     private Integer id;
         
     @ManyToOne  
-    @JoinColumn(name="familyId", insertable = false, updatable = false, nullable=false)
+    @JoinColumn(name="familyId")
     private Family family;
 
     private String item;

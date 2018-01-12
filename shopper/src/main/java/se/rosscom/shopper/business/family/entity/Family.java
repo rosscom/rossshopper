@@ -1,12 +1,14 @@
 package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import se.rosscom.shopper.business.account.entity.Account;
 import se.rosscom.shopper.business.home.entity.Home;
+import se.rosscom.shopper.business.list.entity.ListDetail;
 
 /**
  *
@@ -42,6 +44,9 @@ public class Family implements Serializable {
     @ManyToOne  
     @JoinColumn(name="home")
     private Home home;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="family", orphanRemoval = true)
+    public List<ListDetail> listDetails;
 
     public Family(Account acc, Home home) {
         this.setAccount(acc);
