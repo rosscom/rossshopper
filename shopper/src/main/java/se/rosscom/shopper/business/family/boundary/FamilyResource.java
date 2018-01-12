@@ -95,6 +95,7 @@ public class FamilyResource {
     @DELETE
     @Path("{familyId}")
     public void delete(@PathParam("familyId") Long familyId) {
+        System.out.println("##### family-id in resource-delete: " + familyId);
         familyService.delete(familyId);
     }
 

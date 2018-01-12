@@ -70,6 +70,8 @@ public class FamilyService {
     
     public void delete(Long familyId) {
         Family reference = this.findByHome(familyId);
+        System.out.println("###### family-id found: " + reference.getFamilyId());
+        this.em.refresh(reference);
         this.em.remove(reference);
     }
 }
