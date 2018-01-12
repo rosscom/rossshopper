@@ -35,13 +35,6 @@ public class AccountService {
        return account;
     }
 
-
-    public List<Account> findByLoggedIn(String loggedIn) {
-   //     TypedQuery<Account> typedQuery = this.em.createNamedQuery(Account.findByLoggedIn, Account.class).getResultList();
-        
-        return this.em.createNamedQuery(Account.findByLoggedIn,Account.class).getResultList();
-    }
-
     public List<Account> all() {
         return this.em.createNamedQuery(Account.findAll,Account.class).getResultList();
     }
