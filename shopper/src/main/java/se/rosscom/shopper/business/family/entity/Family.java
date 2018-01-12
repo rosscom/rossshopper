@@ -2,6 +2,7 @@ package se.rosscom.shopper.business.family.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,8 +46,8 @@ public class Family implements Serializable {
     @JoinColumn(name="home")
     private Home home;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="family", orphanRemoval = true)
-    public List<ListDetail> listDetails;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy="family", orphanRemoval = true)
+//    public List<ListDetail> listDetails;
 
     public Family(Account acc, Home home) {
         this.setAccount(acc);
