@@ -39,7 +39,7 @@ public class FamilyResource {
 
     @Secured
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response save(FamilyPojo pojo, @Context UriInfo info) {
         Family saveFamily = familyService.save(pojo);
         URI uri = info.getAbsolutePathBuilder().path("/"+saveFamily.getFamilyId()).build();
