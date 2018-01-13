@@ -22,7 +22,7 @@ public class PingServer {
          
     public boolean connectToServer() {
         this.clientPing = ClientBuilder.newClient();
-        this.pingTarget = this.clientPing.target("http://localhost:8080/shopper/api/dagg");
+        this.pingTarget = this.clientPing.target("http://localhost:8080/shopper/api/ping");
         // Check the server
         
         try {
